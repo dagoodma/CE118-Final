@@ -1,0 +1,43 @@
+Checkout from Github:
+git clone git@github.com:dagoodma/CE118-Lab
+
+--
+
+To commit code to the github first be sure your SSH public key is
+generated in .ssh and added to your github account.
+
+## See the changes files
+git status -s
+
+## Add changed files
+git add -A
+
+## Commit to local repository
+git commit -a -m "Your message"
+
+## Commit to github (be sure to see http://help.github.com/create-a-repo/)
+git push -u origin master
+
+
+--
+
+Global setup:
+ Set up git
+  git config --global user.name "David Goodman"
+  git config --global user.email dagoodma@gmail.com
+      
+Next steps:
+  mkdir CE118-Lab3
+  cd CE118-Lab3
+  git init
+  touch README
+  git add README
+  git commit -m 'first commit'
+  git remote add origin git@github.com:dagoodma/CE118-Lab3.git
+  git push -u origin master
+      
+Existing Git Repo?
+  cd existing_git_repo
+  git remote add origin git@github.com:dagoodma/CE118-Lab3.git
+  git push -u origin master
+

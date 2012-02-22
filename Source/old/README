@@ -1,0 +1,19 @@
+Finished part 3.1-3.6
+	code in Part_3/Lab3_Motors.X
+
+Todo:
+-----
+Part 3.7-3.8 (DRV8811)
+	Fix jittery operation (reverse)
+	Play with current jumper
+	Play with drive mode jumper
+	Repeat 3.5-3.6 for this setup
+Do Part 4 and 5
+
+
+
+Report:
+-------
+Need schematic of part 1 wiring.
+
+Lastly, write explaination of ADC port protection (diodes, resistors).
