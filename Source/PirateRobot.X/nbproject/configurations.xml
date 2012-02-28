@@ -9,6 +9,7 @@
       <itemPath>include/PORTS.h</itemPath>
       <itemPath>include/RCServo.h</itemPath>
       <itemPath>include/SES.H</itemPath>
+      <itemPath>TapeSensor.h</itemPath>
       <itemPath>include/bits.h</itemPath>
       <itemPath>include/pwm.h</itemPath>
       <itemPath>include/serial.h</itemPath>
@@ -35,6 +36,7 @@
       <itemPath>Geneva.c</itemPath>
       <itemPath>src/PORTS.c</itemPath>
       <itemPath>src/RCServo.c</itemPath>
+      <itemPath>TapeSensor.c</itemPath>
       <itemPath>C:/Users/dagoodma/Dropbox/CE118_Final/Source/PirateRobot.X/main.c</itemPath>
       <itemPath>src/pwm.c</itemPath>
       <itemPath>src/serial.c</itemPath>
@@ -71,8 +73,8 @@
         <makeCustomizationPostStep></makeCustomizationPostStep>
         <makeCustomizationAlternativeFileToLoadEnabled>false</makeCustomizationAlternativeFileToLoadEnabled>
         <makeCustomizationAlternativeFileToLoad></makeCustomizationAlternativeFileToLoad>
-        <makeCustomizationUseOfUserID>makeCustomizationUseOfUserID</makeCustomizationUseOfUserID>
-        <makeCustomizationUserID>makeCustomizationUserID</makeCustomizationUserID>
+        <makeCustomizationUseOfUserID>NONE</makeCustomizationUseOfUserID>
+        <makeCustomizationUserID></makeCustomizationUserID>
       </makeCustomizationType>
       <C32>
         <property key="optimization-level" value=""/>
