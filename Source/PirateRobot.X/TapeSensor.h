@@ -10,8 +10,8 @@
  * Created on February 25, 2012, 7:50 PM
  */
 
-#ifndef RCServo_H
-#define RCServo_H
+#ifndef TapeSensor_H
+#define TapeSensor_H
 
 /*******************************************************************************
  * PUBLIC #DEFINES                                                             *
@@ -24,6 +24,13 @@
 #define TAPE_ARMFRONT 0x010  // PortW-3
 #define TAPE_ARMLEFT 0x020   // PortW-4
 #define TAPE_ARMRIGHT 0x040  // PortW-5
+
+/**
+ * @Function: Tape_Init()
+ * @return SUCCESS or ERROR
+ * @remark Initializes the tape sensors.
+ * @date 2012.2.28 08:34 */
+char Tape_Init();
 
 
 /**

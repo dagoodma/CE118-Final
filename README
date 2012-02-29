@@ -1,4 +1,108 @@
+
+           . . . .... ......... ................            
+              .  ...   .8DOOOOOOOD...............           
+         .       . . .8OOOOOOOOOMNOOM,..........   M=7M     
+  ....?  ............MOOOOOOOONNZOOOZN. ..  . ...~8  . ..  .
+    N...,N .........8OOOOOOOOMM:.... O  .   .  .?, ONMM.    
+  .,.,....=8........NOOOOOOID.  . .  : .     .OO.$  I. .    
+  8...~:$ ... M7 ...OOOOD .M........ ......M:.: .   .M: .  .
+...:..$.... .....,M.OOD..MMM : OMMM...,.M:......DM..........
+....MMM,.. ,M8.....MMMMMMMMM..~MMMMM. 7 ....$N  ............
+... ............7M8~$ DMMMMM.M MMMMM.. . N+.................
+... .............. .M..OMMD MMZ ., M.:88 ...................
+. .   ............N+ZO. ...,MMM ....MD......................
+  .   .............N..++M...+  ...M M.......................
+... ...............OOMZ.?........ ..  MN....................
+... ............8Z7DO8O..+8::7:?+8.., ...,M~ ...............
+......      :M?...8DOO8=..IMMMMM:..M .:M~....8M ....,O......
+.....DMMNI .8 ..M,OOMO8O... ,=.8........ .M......=$....$....
+....D7~?M7 ..=M...OODONNO.........8 ....... 7 ...DN , ,.....
+...:... 7,.8:.....NOMOMOO=~......O............M...,~..O.....
+...M..Z  .+ ......+OOONOM..MZNMM...............I ..::D .....
+... ,..D Z    .  ..MONOOZ........................O ,O ......
+....MM= 8.. .......$N.8OM.........................  ........
+... ..     ...........8OZ...................................
+......      ..........DM....................................
+.......... .................................................
+
+
+Future TODO:
+----------------
+* State machine and Code for tapesensors 
+* Add pin names into schematics
+
+
+
+
+Febuary 28, 2012
+----------------
+* Ready to print out of MDF
+* Determine beacon switching with ULN2003A
+    - update schematic
+* Test gate servo
+    - write code
+* Prototype and test drive motor servo
+* 
+
+
 Febuary 21, 2012
 ----------------
 * Prototyped geneva wheel: works.
 * Started code.
+
+
+/-----------------------------------------------------------\
+--------------- How to use git -------------------
+##Checkout from Github:
+    git clone git@github.com:dagoodma/CE118-Lab
+
+To commit code to the github first be sure your SSH public key is
+generated in .ssh and added to your github account.
+
+## See the changes files
+    git status -s
+
+## Add changed files
+    git add -A
+
+## Commit to local repository
+    git commit -a -m "Your message"
+
+## Commit to github (be sure to see http://help.github.com/create-a-repo/)
+    git push -u origin master
+
+
+-------- How to configure ssh public key  ------------
+
+Once you have a github account you must configure your public ssh key
+for each computer you wish to use.
+
+## Generate an ssh-rsa public key
+    ssh-keygen
+
+Next, copy the contents of id_rsa.pub and login to your github account.
+Under account settings > SSH Keys click Add New SSH Key, paste, and 
+done.
+
+## Configure info
+    
+    git config --global user.name "Your Name"
+    git config --global user.email your@email.com
+
+
+--------------- Add a repository -------------------
+
+Next steps:
+  mkdir CE118-Lab3
+  cd CE118-Lab3
+  git init
+  touch README
+  git add README
+  git commit -m 'first commit'
+  git remote add origin git@github.com:dagoodma/CE118-Lab3.git
+  git push -u origin master
+      
+Existing Git Repo?
+  cd existing_git_repo
+  git remote add origin git@github.com:dagoodma/CE118-Lab3.git
+  git push -u origin master

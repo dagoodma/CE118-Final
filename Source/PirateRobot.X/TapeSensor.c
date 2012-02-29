@@ -4,15 +4,7 @@
  *
  * Taking 3 samples, at 
  *
- * Created on February 25, 2012, 6:23 PM
  */
-/*
- * File:   Geneva.c
- * Author: dagoodma
- *
- * Created on February 21, 2012, 7:55 PM
- */
-#define GENEVA_TEST
 
 #include <p32xxxx.h>
 #include "serial.h"
@@ -35,29 +27,43 @@
 #define TAPEPINCOUNT TAPESENSORCOUNT * 2
 
 
+/* Tape sensor port configuration 
+    TAPE_LEFT 0x001    ===> PortV-5
+    TAPE_CENTER 0x002  ===> PortV-6
+    TAPE_RIGHT 0x004   ===> PortV-7
+    TAPE_BACK 0x008    ===> PortV-8
+    TAPE_ARMFRONT 0x010===> PortW-3
+    TAPE_ARMLEFT 0x020 ===> PortW-4
+    TAPE_ARMRIGHT 0x040===> PortW-5
+*/
+
+
 
 //--------------- Photodetectors --------------
-// TD1 (top middle on TR)
-#define TAPE_TRISD1 PORTV03_TRIS
-#define TAPE_LATD1   PORTV03_LAT
-// TD2 (bottom left on TR)
-#define TAPE_TRISD2 PORTV04_TRIS
-#define TAPE_LATD2 PORTV04_LAT
-// TD3 (bottom right on TR)
-#define TAPE_TRISD3 PORTV05_TRIS
-#define TAPE_LATD3 PORTV05_LAT
+#define TAPE_LEFT_TRIS PORTV05_TRIS
+#define TAPE_LEFT_LAT   PORTV05_LAT
+#define TAPE_CENTER_TRIS PORTV06_TRIS
+#define TAPE_CENTER_LAT PORTV06_LAT
+#define TAPE_RIGHT_TRIS PORTV07_TRIS
+#define TAPE_RIGHT_LAT PORTV07_LAT
+#define TAPE_BACK_TRIS PORTV08_TRIS
+#define TAPE_BACK_LAT PORTV08_LAT
+#define TAPE_ARMFRONT_TRIS PORTW03_TRIS
+#define TAPE_ARMFRONT_LAT  PORTW03_LAT
+#define TAPE_ARMLEFT_TRIS   PORTW04_TRIS
+#define TAPE_ARMLEFT_LAT   PORTw04_LAT
+#define TAPE_ARMRIGHT_TRIS   PORTW05_TRIS
+#define TAPE_ARMRIGHT_LAT   PORTw05_LAT
 
 //----------------- Emitters ------------------
-// TE1 (top middle on TR)
-#define TAPE_TRISE1 PORTZ08_TRIS
-#define TAPE_LATE1   PORTZ08_LAT
-// TE2 (bottom left on TR)
-#define TAPE_TRISE2 PORTZ08_TRIS
-#define TAPE_LATE2 PORTZ08_LAT
-// TE3 (bottom right on TR)
-#define TAPE_TRISE3 PORTZ09_TRIS
-#define TAPE_LATE3 PORTZ09_LAT
-
+#define TAPE_LED_ARMFRONT_TRIS PORTZ07_TRIS
+#define TAPE_LED_ARMFRONT_LAT PORTZ07_LAT
+#define TAPE_LED_LC_TRIS PORTZ10_TRIS
+#define TAPE_LED_LC_LAT PORTZ10_LAT
+#define TAPE_LED_RB_TRIS PORTZ11_TRIS
+#define TAPE_LED_RB_LAT PORTZ11_LAT
+#define TAPE_LED_ARMFRONT_TRIS PORTZ12_TRIS
+#define TAPE_LED_RB_LAT PORTZ12_LAT
 
 
 
@@ -88,13 +94,13 @@ static volatile unsigned int * const RC_LATCLR[] = {&LATFCLR, &LATBCLR, &LATDCLR
 
 /**
  * Function: Tape_Init
- * @param [TapePins], optionally enables only the given
+ * @param [TapePins], optionally enables only the given pins
  * @return SUCCESS or ERROR
  * @remark
  */
 char Tape_Init(unsigned short int TapePins) {
 
-    dbprintf("\nGeneva loaded (%d)", LOAD_WIDTH);
+    dbprintf("\nTapesensors initialized (%d)", LOAD_WIDTH);
     return SUCCESS;
 }
 
