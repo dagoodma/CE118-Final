@@ -17,6 +17,19 @@
  * PUBLIC #DEFINES                                                             *
  ******************************************************************************/
 
+#ifndef SUCCESS
+#define SUCCESS 0
+#define ERROR -1
+#endif
+
+#ifndef TRUE
+#define FALSE 0
+#define TRUE 1
+#endif
+
+
+
+/*
 #define TAPE_LEFT 0x001      // PortV-5
 #define TAPE_CENTER 0x002    // PortV-6
 #define TAPE_RIGHT 0x004     // PortV-7
@@ -24,6 +37,7 @@
 #define TAPE_ARMFRONT 0x010  // PortW-3
 #define TAPE_ARMLEFT 0x020   // PortW-4
 #define TAPE_ARMRIGHT 0x040  // PortW-5
+*/
 
 /**
  * @Function: Tape_Init()
@@ -40,6 +54,15 @@ char Tape_Init();
  *         called before handling any other state machines.
  * @date 2012.2.27 05:42 */
 char Tape_HandleSM();
+
+
+/**
+ * @Function: Tape_End()
+ * @return SUCCESS or ERROR
+ * @remark Used to end use of the tape sensors.
+ * @date 2012.2.29 12:59 */
+char Tape_End();
+
 
 // ********************* Tape Sensor Accessors *************************
 /**

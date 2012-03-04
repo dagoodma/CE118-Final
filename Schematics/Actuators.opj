@@ -16,7 +16,8 @@
       (Path "Design Resources")
       (Path "Design Resources" ".\actuators.dsn")
       (Path "Design Resources" ".\actuators.dsn" "SCHEMATIC1")
-      (Path "Design Resources" ".\actuators.dsn" "Design Cache"))
+      (Path "Design Resources" ".\actuators.dsn" "Design Cache")
+      (Select "Design Resources" ".\actuators.dsn" "SCHEMATIC1" "motorWheels"))
     (HierarchyView)
     (Doc
       (Type "COrCapturePMDoc")
