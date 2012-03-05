@@ -9,10 +9,10 @@
 
 #ifdef USE_MAIN
 #include <p32xxxx.h>
-#include <serial.h>
-#include <PORTS.h>
-#include <AD.h>
-#include <pwm.h>
+#include "serial.h"
+#include "PORTS.h"
+#include "AD.h"
+#include "pwm.h"
 
 // Port and PWM settings
 #define PWM_PORT       PWM_PORTZ06 // PWM to enable

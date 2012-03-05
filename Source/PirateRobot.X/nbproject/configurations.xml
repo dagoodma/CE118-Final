@@ -36,6 +36,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>src/AD.c</itemPath>
+      <itemPath>Bumper.c</itemPath>
       <itemPath>Drive.c</itemPath>
       <itemPath>Gate.c</itemPath>
       <itemPath>src/PORTS.c</itemPath>
@@ -80,8 +81,8 @@
         <makeCustomizationPostStep></makeCustomizationPostStep>
         <makeCustomizationAlternativeFileToLoadEnabled>false</makeCustomizationAlternativeFileToLoadEnabled>
         <makeCustomizationAlternativeFileToLoad></makeCustomizationAlternativeFileToLoad>
-        <makeCustomizationUseOfUserID>NONE</makeCustomizationUseOfUserID>
-        <makeCustomizationUserID></makeCustomizationUserID>
+        <makeCustomizationUseOfUserID>makeCustomizationUseOfUserID</makeCustomizationUseOfUserID>
+        <makeCustomizationUserID>makeCustomizationUserID</makeCustomizationUserID>
       </makeCustomizationType>
       <C32>
         <property key="optimization-level" value=""/>
@@ -90,7 +91,7 @@
         <property key="preprocessor-macros" value=""/>
         <property key="additional-warnings" value="false"/>
         <property key="extra-include-directories"
-                  value="C:\Users\Justin\Dropbox\CE118_Final\Source\PirateRobot.X\include;C:\Users\hahernan\Dropbox\CE118_Final\Source\PirateRobot.X\include"/>
+                  value="C:\Users\hahernan\Dropbox\CE118_Final\Source\PirateRobot.X\include"/>
         <property key="post-instruction-scheduling" value="default"/>
         <property key="enable-app-io" value="false"/>
         <property key="enable-unroll-loops" value="false"/>
@@ -112,8 +113,8 @@
         <property key="list-file" value=""/>
         <property key="list-source" value="false"/>
         <property key="list-assembly" value="false"/>
-        <property key="extra-include-directories-for-preprocessor" value=""/>
         <property key="warning-level" value=""/>
+        <property key="extra-include-directories-for-preprocessor" value=""/>
         <property key="list-section-info" value="false"/>
         <property key="omit-forms" value="false"/>
         <property key="list-symbols" value="false"/>

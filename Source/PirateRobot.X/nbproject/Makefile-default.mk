@@ -36,10 +36,10 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/Drive.o ${OBJECTDIR}/Gate.o ${OBJECTDIR}/TapeSensor.o ${OBJECTDIR}/main.o ${OBJECTDIR}/src/AD.o ${OBJECTDIR}/src/PORTS.o ${OBJECTDIR}/src/RCServo.o ${OBJECTDIR}/src/pwm.o ${OBJECTDIR}/src/serial.o ${OBJECTDIR}/src/timers.o
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/Bumper.o ${OBJECTDIR}/Drive.o ${OBJECTDIR}/Gate.o ${OBJECTDIR}/TapeSensor.o ${OBJECTDIR}/main.o ${OBJECTDIR}/src/AD.o ${OBJECTDIR}/src/PORTS.o ${OBJECTDIR}/src/RCServo.o ${OBJECTDIR}/src/pwm.o ${OBJECTDIR}/src/serial.o ${OBJECTDIR}/src/timers.o
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/Drive.o ${OBJECTDIR}/Gate.o ${OBJECTDIR}/TapeSensor.o ${OBJECTDIR}/main.o ${OBJECTDIR}/src/AD.o ${OBJECTDIR}/src/PORTS.o ${OBJECTDIR}/src/RCServo.o ${OBJECTDIR}/src/pwm.o ${OBJECTDIR}/src/serial.o ${OBJECTDIR}/src/timers.o
+OBJECTFILES=${OBJECTDIR}/Bumper.o ${OBJECTDIR}/Drive.o ${OBJECTDIR}/Gate.o ${OBJECTDIR}/TapeSensor.o ${OBJECTDIR}/main.o ${OBJECTDIR}/src/AD.o ${OBJECTDIR}/src/PORTS.o ${OBJECTDIR}/src/RCServo.o ${OBJECTDIR}/src/pwm.o ${OBJECTDIR}/src/serial.o ${OBJECTDIR}/src/timers.o
 
 
 CFLAGS=
@@ -93,103 +93,113 @@ ifeq ($(TYPE_IMAGE), DEBUG_RUN)
 ${OBJECTDIR}/TapeSensor.o: TapeSensor.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR} 
 	@${RM} ${OBJECTDIR}/TapeSensor.o.d 
-	@${FIXDEPS} "${OBJECTDIR}/TapeSensor.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/Justin/Dropbox/CE118_Final/Source/PirateRobot.X/include" -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/TapeSensor.o.d" -o ${OBJECTDIR}/TapeSensor.o TapeSensor.c  
+	@${FIXDEPS} "${OBJECTDIR}/TapeSensor.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/TapeSensor.o.d" -o ${OBJECTDIR}/TapeSensor.o TapeSensor.c  
+	
+${OBJECTDIR}/Bumper.o: Bumper.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR} 
+	@${RM} ${OBJECTDIR}/Bumper.o.d 
+	@${FIXDEPS} "${OBJECTDIR}/Bumper.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/Bumper.o.d" -o ${OBJECTDIR}/Bumper.o Bumper.c  
 	
 ${OBJECTDIR}/Drive.o: Drive.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR} 
 	@${RM} ${OBJECTDIR}/Drive.o.d 
-	@${FIXDEPS} "${OBJECTDIR}/Drive.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/Justin/Dropbox/CE118_Final/Source/PirateRobot.X/include" -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/Drive.o.d" -o ${OBJECTDIR}/Drive.o Drive.c  
+	@${FIXDEPS} "${OBJECTDIR}/Drive.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/Drive.o.d" -o ${OBJECTDIR}/Drive.o Drive.c  
 	
 ${OBJECTDIR}/src/pwm.o: src/pwm.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/src 
 	@${RM} ${OBJECTDIR}/src/pwm.o.d 
-	@${FIXDEPS} "${OBJECTDIR}/src/pwm.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/Justin/Dropbox/CE118_Final/Source/PirateRobot.X/include" -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/src/pwm.o.d" -o ${OBJECTDIR}/src/pwm.o src/pwm.c  
+	@${FIXDEPS} "${OBJECTDIR}/src/pwm.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/src/pwm.o.d" -o ${OBJECTDIR}/src/pwm.o src/pwm.c  
 	
 ${OBJECTDIR}/src/RCServo.o: src/RCServo.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/src 
 	@${RM} ${OBJECTDIR}/src/RCServo.o.d 
-	@${FIXDEPS} "${OBJECTDIR}/src/RCServo.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/Justin/Dropbox/CE118_Final/Source/PirateRobot.X/include" -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/src/RCServo.o.d" -o ${OBJECTDIR}/src/RCServo.o src/RCServo.c  
+	@${FIXDEPS} "${OBJECTDIR}/src/RCServo.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/src/RCServo.o.d" -o ${OBJECTDIR}/src/RCServo.o src/RCServo.c  
 	
 ${OBJECTDIR}/src/PORTS.o: src/PORTS.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/src 
 	@${RM} ${OBJECTDIR}/src/PORTS.o.d 
-	@${FIXDEPS} "${OBJECTDIR}/src/PORTS.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/Justin/Dropbox/CE118_Final/Source/PirateRobot.X/include" -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/src/PORTS.o.d" -o ${OBJECTDIR}/src/PORTS.o src/PORTS.c  
+	@${FIXDEPS} "${OBJECTDIR}/src/PORTS.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/src/PORTS.o.d" -o ${OBJECTDIR}/src/PORTS.o src/PORTS.c  
 	
 ${OBJECTDIR}/main.o: main.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR} 
 	@${RM} ${OBJECTDIR}/main.o.d 
-	@${FIXDEPS} "${OBJECTDIR}/main.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/Justin/Dropbox/CE118_Final/Source/PirateRobot.X/include" -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/main.o.d" -o ${OBJECTDIR}/main.o main.c  
+	@${FIXDEPS} "${OBJECTDIR}/main.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/main.o.d" -o ${OBJECTDIR}/main.o main.c  
 	
 ${OBJECTDIR}/src/AD.o: src/AD.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/src 
 	@${RM} ${OBJECTDIR}/src/AD.o.d 
-	@${FIXDEPS} "${OBJECTDIR}/src/AD.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/Justin/Dropbox/CE118_Final/Source/PirateRobot.X/include" -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/src/AD.o.d" -o ${OBJECTDIR}/src/AD.o src/AD.c  
+	@${FIXDEPS} "${OBJECTDIR}/src/AD.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/src/AD.o.d" -o ${OBJECTDIR}/src/AD.o src/AD.c  
 	
 ${OBJECTDIR}/src/timers.o: src/timers.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/src 
 	@${RM} ${OBJECTDIR}/src/timers.o.d 
-	@${FIXDEPS} "${OBJECTDIR}/src/timers.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/Justin/Dropbox/CE118_Final/Source/PirateRobot.X/include" -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/src/timers.o.d" -o ${OBJECTDIR}/src/timers.o src/timers.c  
+	@${FIXDEPS} "${OBJECTDIR}/src/timers.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/src/timers.o.d" -o ${OBJECTDIR}/src/timers.o src/timers.c  
 	
 ${OBJECTDIR}/src/serial.o: src/serial.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/src 
 	@${RM} ${OBJECTDIR}/src/serial.o.d 
-	@${FIXDEPS} "${OBJECTDIR}/src/serial.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/Justin/Dropbox/CE118_Final/Source/PirateRobot.X/include" -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/src/serial.o.d" -o ${OBJECTDIR}/src/serial.o src/serial.c  
+	@${FIXDEPS} "${OBJECTDIR}/src/serial.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/src/serial.o.d" -o ${OBJECTDIR}/src/serial.o src/serial.c  
 	
 ${OBJECTDIR}/Gate.o: Gate.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR} 
 	@${RM} ${OBJECTDIR}/Gate.o.d 
-	@${FIXDEPS} "${OBJECTDIR}/Gate.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/Justin/Dropbox/CE118_Final/Source/PirateRobot.X/include" -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/Gate.o.d" -o ${OBJECTDIR}/Gate.o Gate.c  
+	@${FIXDEPS} "${OBJECTDIR}/Gate.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/Gate.o.d" -o ${OBJECTDIR}/Gate.o Gate.c  
 	
 else
 ${OBJECTDIR}/TapeSensor.o: TapeSensor.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR} 
 	@${RM} ${OBJECTDIR}/TapeSensor.o.d 
-	@${FIXDEPS} "${OBJECTDIR}/TapeSensor.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/Justin/Dropbox/CE118_Final/Source/PirateRobot.X/include" -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/TapeSensor.o.d" -o ${OBJECTDIR}/TapeSensor.o TapeSensor.c  
+	@${FIXDEPS} "${OBJECTDIR}/TapeSensor.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/TapeSensor.o.d" -o ${OBJECTDIR}/TapeSensor.o TapeSensor.c  
+	
+${OBJECTDIR}/Bumper.o: Bumper.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR} 
+	@${RM} ${OBJECTDIR}/Bumper.o.d 
+	@${FIXDEPS} "${OBJECTDIR}/Bumper.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/Bumper.o.d" -o ${OBJECTDIR}/Bumper.o Bumper.c  
 	
 ${OBJECTDIR}/Drive.o: Drive.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR} 
 	@${RM} ${OBJECTDIR}/Drive.o.d 
-	@${FIXDEPS} "${OBJECTDIR}/Drive.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/Justin/Dropbox/CE118_Final/Source/PirateRobot.X/include" -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/Drive.o.d" -o ${OBJECTDIR}/Drive.o Drive.c  
+	@${FIXDEPS} "${OBJECTDIR}/Drive.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/Drive.o.d" -o ${OBJECTDIR}/Drive.o Drive.c  
 	
 ${OBJECTDIR}/src/pwm.o: src/pwm.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/src 
 	@${RM} ${OBJECTDIR}/src/pwm.o.d 
-	@${FIXDEPS} "${OBJECTDIR}/src/pwm.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/Justin/Dropbox/CE118_Final/Source/PirateRobot.X/include" -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/src/pwm.o.d" -o ${OBJECTDIR}/src/pwm.o src/pwm.c  
+	@${FIXDEPS} "${OBJECTDIR}/src/pwm.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/src/pwm.o.d" -o ${OBJECTDIR}/src/pwm.o src/pwm.c  
 	
 ${OBJECTDIR}/src/RCServo.o: src/RCServo.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/src 
 	@${RM} ${OBJECTDIR}/src/RCServo.o.d 
-	@${FIXDEPS} "${OBJECTDIR}/src/RCServo.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/Justin/Dropbox/CE118_Final/Source/PirateRobot.X/include" -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/src/RCServo.o.d" -o ${OBJECTDIR}/src/RCServo.o src/RCServo.c  
+	@${FIXDEPS} "${OBJECTDIR}/src/RCServo.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/src/RCServo.o.d" -o ${OBJECTDIR}/src/RCServo.o src/RCServo.c  
 	
 ${OBJECTDIR}/src/PORTS.o: src/PORTS.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/src 
 	@${RM} ${OBJECTDIR}/src/PORTS.o.d 
-	@${FIXDEPS} "${OBJECTDIR}/src/PORTS.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/Justin/Dropbox/CE118_Final/Source/PirateRobot.X/include" -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/src/PORTS.o.d" -o ${OBJECTDIR}/src/PORTS.o src/PORTS.c  
+	@${FIXDEPS} "${OBJECTDIR}/src/PORTS.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/src/PORTS.o.d" -o ${OBJECTDIR}/src/PORTS.o src/PORTS.c  
 	
 ${OBJECTDIR}/main.o: main.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR} 
 	@${RM} ${OBJECTDIR}/main.o.d 
-	@${FIXDEPS} "${OBJECTDIR}/main.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/Justin/Dropbox/CE118_Final/Source/PirateRobot.X/include" -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/main.o.d" -o ${OBJECTDIR}/main.o main.c  
+	@${FIXDEPS} "${OBJECTDIR}/main.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/main.o.d" -o ${OBJECTDIR}/main.o main.c  
 	
 ${OBJECTDIR}/src/AD.o: src/AD.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/src 
 	@${RM} ${OBJECTDIR}/src/AD.o.d 
-	@${FIXDEPS} "${OBJECTDIR}/src/AD.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/Justin/Dropbox/CE118_Final/Source/PirateRobot.X/include" -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/src/AD.o.d" -o ${OBJECTDIR}/src/AD.o src/AD.c  
+	@${FIXDEPS} "${OBJECTDIR}/src/AD.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/src/AD.o.d" -o ${OBJECTDIR}/src/AD.o src/AD.c  
 	
 ${OBJECTDIR}/src/timers.o: src/timers.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/src 
 	@${RM} ${OBJECTDIR}/src/timers.o.d 
-	@${FIXDEPS} "${OBJECTDIR}/src/timers.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/Justin/Dropbox/CE118_Final/Source/PirateRobot.X/include" -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/src/timers.o.d" -o ${OBJECTDIR}/src/timers.o src/timers.c  
+	@${FIXDEPS} "${OBJECTDIR}/src/timers.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/src/timers.o.d" -o ${OBJECTDIR}/src/timers.o src/timers.c  
 	
 ${OBJECTDIR}/src/serial.o: src/serial.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/src 
 	@${RM} ${OBJECTDIR}/src/serial.o.d 
-	@${FIXDEPS} "${OBJECTDIR}/src/serial.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/Justin/Dropbox/CE118_Final/Source/PirateRobot.X/include" -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/src/serial.o.d" -o ${OBJECTDIR}/src/serial.o src/serial.c  
+	@${FIXDEPS} "${OBJECTDIR}/src/serial.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/src/serial.o.d" -o ${OBJECTDIR}/src/serial.o src/serial.c  
 	
 ${OBJECTDIR}/Gate.o: Gate.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR} 
 	@${RM} ${OBJECTDIR}/Gate.o.d 
-	@${FIXDEPS} "${OBJECTDIR}/Gate.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/Justin/Dropbox/CE118_Final/Source/PirateRobot.X/include" -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/Gate.o.d" -o ${OBJECTDIR}/Gate.o Gate.c  
+	@${FIXDEPS} "${OBJECTDIR}/Gate.o.d" $(SILENT) -c ${MP_CC} $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION) -I"C:/Users/hahernan/Dropbox/CE118_Final/Source/PirateRobot.X/include" -MMD -MF "${OBJECTDIR}/Gate.o.d" -o ${OBJECTDIR}/Gate.o Gate.c  
 	
 endif
 

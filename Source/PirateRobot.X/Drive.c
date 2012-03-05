@@ -4,7 +4,7 @@
  *
  * Created on March 2, 2012
  */
-#define DRIVE_TEST
+//#define DRIVE_TEST
 
 #include <p32xxxx.h>
 #include "serial.h"
@@ -16,6 +16,7 @@
  * PRIVATE #DEFINES                                                            *
  ******************************************************************************/
 
+//#define DRIVE_TEST
 #define DEBUG_VERBOSE
 #ifdef DEBUG_VERBOSE
     #define dbprintf(...) printf(__VA_ARGS__)
@@ -33,14 +34,44 @@
 #define FREQUENCY_PWM 25
 
 /*******************************************************************************
+ * PRIVATE VARIABLES                                                           *
+ ******************************************************************************/
+enum motor {A, B};
+enum direction {FORWARD, REVERSE};
+static unsigned char motorPWM[] = {MOTOR_A_PWM, MOTOR_B_PWM};
+
+/*******************************************************************************
  * PRIVATE FUNCTIONS PROTOTYPES                                                *
  ******************************************************************************/
+static void SetDirection(int motor, int direction);
+
+/*******************************************************************************
+ * PRIVATE FUNCTIONS                                                           *
+ ******************************************************************************/
+static void SetDirection(int motor, int direction) {
+    // TODO add error checking
+    // Motors are wired backwards
+    if (motor == A) {
+        MOTOR_A_DIR = direction;
+    }
+    else {
+        MOTOR_B_DIR = !direction;
+    }
+}
+
+static char SetSpeed(int motor, int speed) {
+    // TODO add error checking
+    int newSpeed = speed * 100;
+    SetDutyCycle(motorPWM[motor], newSpeed);
+}
 
 /*******************************************************************************
  * PUBLIC FUNCTIONS                                                           *
  ******************************************************************************/
 
 char Drive_Init(void) {
+    MOTOR_A_DIR_TRIS = 0;
+    MOTOR_B_DIR_TRIS = 0;
     PWM_Init(MOTOR_A_PWM |  MOTOR_B_PWM, FREQUENCY_PWM);
     Drive_Stop();
 
@@ -58,19 +89,21 @@ char Drive_Turn(unsigned int turnType, unsigned int turnDir, char speed) {
 }
 
 char Drive_Forward(char speed){
-    MOTOR_A_DIR = 0;
-    MOTOR_B_DIR = 0;
-    SetDutyCycle(MOTOR_A_PWM, 500);
-    SetDutyCycle(MOTOR_B_PWM, 500);
+    SetDirection(A,FORWARD);
+    SetDirection(B,FORWARD);
+
+    SetSpeed(A,speed);
+    SetSpeed(B,speed);
 
     return SUCCESS;
 }
 
 char Drive_Reverse(char speed){
-    MOTOR_A_DIR = 1;
-    MOTOR_B_DIR = 1;
-    SetDutyCycle(MOTOR_A_PWM, 500);
-    SetDutyCycle(MOTOR_B_PWM, 500);
+    SetDirection(A,REVERSE);
+    SetDirection(B,REVERSE);
+
+    SetSpeed(A,speed);
+    SetSpeed(B,speed);
 
     return SUCCESS;
 }
@@ -99,14 +132,43 @@ char main(){
     printf("\nHello World");
 
     while(1){
-
+        printf("\nFORWARD!");
         Drive_Forward(5);
         DELAY();
 
         Drive_Stop();
         DELAY();
-
+        printf("\nREVERSE!");
         Drive_Reverse(5);
+        DELAY();
+
+        Drive_Stop();
+        DELAY();
+
+        printf("\nFORWARD!");
+        Drive_Forward(7);
+        DELAY();
+
+        Drive_Stop();
+        DELAY();
+        printf("\nREVERSE!");
+        Drive_Reverse(7);
+        DELAY();
+
+        Drive_Stop();
+        DELAY();
+
+        printf("\nFORWARD!");
+        Drive_Forward(9);
+        DELAY();
+
+        Drive_Stop();
+        DELAY();
+        printf("\nREVERSE!");
+        Drive_Reverse(9);
+        DELAY();
+
+        Drive_Stop();
         DELAY();
 
     }

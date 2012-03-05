@@ -1,8 +1,9 @@
 /*
- * File:   TapeSensor.c
- * Author: dagoodma
+ * File:   IR.c
+ * Author: dagoodma, hahernan, jurjohns
  *
- * Taking 3 samples, at 
+ * Infrared beacon sensor module. Switches between the main and angled
+ * beacon sensors to aquire readings from both.
  *
  */
 
@@ -15,7 +16,7 @@
 /*******************************************************************************
  * PRIVATE #DEFINES                                                            *
  ******************************************************************************/
-//#define BUMP_TEST
+//#define IR_TEST
 
 #define DEBUG_VERBOSE
 #ifdef DEBUG_VERBOSE
@@ -24,32 +25,28 @@
     #define dbprintf(...)
 #endif
 
-#define TIMER_NUM 1
+#define TIMER_NUM 3
 #define UPDATE_DELAY 2 // ms
 
-#define BUMPERCOUNT 3
+#define SENSORCOUNT 2
 
-#define BUMPER_RIGHT_BIT PORTZ03_BIT // _RE4
-#define BUMPER_RIGHT_TRIS PORTZ03_TRIS
-#define BUMPER_LEFT_BIT PORTZ04_BIT
-#define BUMPER_LEFT_TRIS PORTZ04_TRIS
-#define BUMPER_CENTER_BIT PORTZ05_BIT
-#define BUMPER_CENTER_TRIS PORTZ05_TRIS
+#define IR_BIT PORTZ06_BIT
+#define IR_TRIS PORTZ06_TRIS
 
-#define MAXCOUNT 0x3
-
+#define READCOUNT 0x4
+#define READSHIFT 0x1 // amount to divide by (2)
 
 // Delay times
-#define READDELAY 2 // milisecond
+#define READDELAY 2 // msecs
 
 /*******************************************************************************
  * PRIVATE VARIABLES                                                           *
  ******************************************************************************/
 
 
-enum bumperIndex {BUMPER_RIGHT_I, BUMPER_LEFT_I, BUMPER_CENTER_I};
-static unsigned char bumperCounter[] = {0, 0, 0};
-static unsigned int bumperPort[] = {0, 0, 0};
+enum irIndex {BUMPER_RIGHT_I, BUMPER_LEFT_I, BUMPER_CENTER_I};
+static unsigned char irCounter[] = {0, 0};
+static unsigned int irPort[] = {0, 0};
 
 /**
 static unsigned int const ledPortMap[] = {
@@ -76,10 +73,10 @@ static char ReadBumpers();
  * PRIVATE FUNCTIONS                                                           *
  ******************************************************************************/
 
-static void UpdateBumperCounters() {
+static void UpdateIRCounters() {
     int i;
-    ReadBumpers();
-    // Iterate over bumpers and adjust saturating counters
+    ReadIR();
+    // Iterate over IR detectors and adjust saturating counters
     for (i = 0; i < BUMPERCOUNT; i++) {
         if (bumperPort[i]) {
             if (bumperCounter[i] < MAXCOUNT)
@@ -93,10 +90,9 @@ static void UpdateBumperCounters() {
 
 }
 
-static char ReadBumpers() {
-    bumperPort[BUMPER_RIGHT_I] = !BUMPER_RIGHT_BIT;
-    bumperPort[BUMPER_LEFT_I] = !BUMPER_LEFT_BIT;
-    bumperPort[BUMPER_CENTER_I] = !BUMPER_CENTER_BIT;
+static void ReadIR() {
+    irPort[IR_MAIN_I] = IR_MAIN_BIT;
+    irPort[IR_ANGLE_I] = IR_ANGLE_BIT;
     return SUCCESS;
 }
 
@@ -157,29 +153,6 @@ char Bumper_End() {
 
 int main(void) {
     SERIAL_Init();
-    TIMERS_Init();
     int i = 0;
 
     INTEnableSystemMultiVectoredInt();
-
-    Bumper_Init();
-
-    // Test routine (above goes in init)
-    printf("\nHello tester!");
-    DELAY();
-
-    while(1) {
-        Bumper_Update();
-
-        printf("\nStates: LEFT=(%x), CENTER=(%x), RIGHT=(%x)",
-            Bumper_LeftTriggered(), Bumper_CenterTriggered(),
-            Bumper_RightTriggered());
-               
-            while (!IsTransmitEmpty()); // bad, this is blocking code
-    } // end of loop
-
-    Bumper_End();
-    return 0;
-} // test harness
-#endif
-

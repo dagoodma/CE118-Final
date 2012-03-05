@@ -39,8 +39,13 @@
 #define TAPE_ARMRIGHT 0x040  // PortW-5
 */
 
+/*******************************************************************************
+ * PUBLIC FUNCTION PROTOTYPES                                                  *
+ ******************************************************************************/
+
+
 /**
- * @Function: Tape_Init()
+ * @Function: Tape_Init
  * @return SUCCESS or ERROR
  * @remark Initializes the tape sensors.
  * @date 2012.2.28 08:34 */
@@ -48,7 +53,7 @@ char Tape_Init();
 
 
 /**
- * @Function: Tape_HandleSM()
+ * @Function: Tape_HandleSM
  * @return SUCCESS or ERROR
  * @remark Handles the tape sensor's state machine. This should be
  *         called before handling any other state machines.
@@ -57,7 +62,7 @@ char Tape_HandleSM();
 
 
 /**
- * @Function: Tape_End()
+ * @Function: Tape_End
  * @return SUCCESS or ERROR
  * @remark Used to end use of the tape sensors.
  * @date 2012.2.29 12:59 */
@@ -66,35 +71,35 @@ char Tape_End();
 
 // ********************* Tape Sensor Accessors *************************
 /**
- * @Function: Tape_LeftTriggered()
+ * @Function: Tape_LeftTriggered
  * @return TRUE or FALSE value
  * @remark Returns a TRUE value if the left tape sensor is triggered.
  * @date 2012.2.27 05:42 */
 char Tape_LeftTriggered();
 
 /**
- * @Function: Tape_CenterTriggered()
+ * @Function: Tape_CenterTriggered
  * @return TRUE or FALSE value
  * @remark Returns a TRUE value if the center tape sensor is triggered.
  * @date 2012.2.27 05:42 */
 char Tape_CenterTriggered();
 
 /**
- * @Function: Tape_RightTriggered()
+ * @Function: Tape_RightTriggered
  * @return TRUE or FALSE value
  * @remark Returns a TRUE value if the right tape sensor is triggered.
  * @date 2012.2.27 05:42 */
 char Tape_RightTriggered();
 
 /**
- * @Function: Tape_BackTriggered()
+ * @Function: Tape_BackTriggered
  * @return TRUE or FALSE value
  * @remark Returns a TRUE value if the back tape sensor is triggered.
  * @date 2012.2.27 05:42 */
 char Tape_BackTriggered();
 
 /**
- * @Function: Tape_ArmFrontTriggered()
+ * @Function: Tape_ArmFrontTriggered
  * @return TRUE or FALSE value
  * @remark Returns a TRUE value if the arm's front tape sensor is
  *         triggered.
@@ -102,7 +107,7 @@ char Tape_BackTriggered();
 char Tape_ArmFrontTriggered();
 
 /**
- * @Function: Tape_ArmLeftTriggered()
+ * @Function: Tape_ArmLeftTriggered
  * @return TRUE or FALSE value
  * @remark Returns a TRUE value if the arm's left tape sensor is
  *         triggered.
@@ -110,7 +115,7 @@ char Tape_ArmFrontTriggered();
 char Tape_ArmLeftTriggered();
 
 /**
- * @Function: Tape_ArmRightTriggered()
+ * @Function: Tape_ArmRightTriggered
  * @return TRUE or FALSE value
  * @remark Returns a TRUE value if the arm's right tape sensor is
  *         triggered.
