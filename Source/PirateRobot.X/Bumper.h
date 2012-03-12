@@ -47,6 +47,13 @@ char Bumper_Init();
 char Bumper_Update();
 
 /**
+ * Function: Bumper_AnyTriggered
+ * @return TRUE or FALSE
+ * @remark Whether any bumper has been triggered.
+ */
+char Bumper_AnyTriggered();
+
+/**
  * Function: Bumper_LeftTriggered
  * @return TRUE or FALSE
  * @remark Whether the left bumper has been triggered.
@@ -73,3 +80,5 @@ char Bumper_RightTriggered();
  * @remark Stops the bumper module.
  */
 char Bumper_End();
+
+#endif

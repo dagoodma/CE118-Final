@@ -11,14 +11,18 @@
 #include "serial.h"
 #include "timers.h"
 #include "PORTS.h"
+#include "IR.h"
 //#include "LED.h"
+#ifdef IR_ADC
+#include "AD.H"
+#endif
 
 /*******************************************************************************
  * PRIVATE #DEFINES                                                            *
  ******************************************************************************/
 //#define IR_TEST
 
-#define DEBUG_VERBOSE
+//#define DEBUG_VERBOSE
 #ifdef DEBUG_VERBOSE
     #define dbprintf(...) printf(__VA_ARGS__)
 #else
@@ -26,33 +30,46 @@
 #endif
 
 #define TIMER_NUM 3
-#define UPDATE_DELAY 2 // ms
+#define UPDATE_DELAY 12 // ms
 
 #define SENSORCOUNT 2
 
-#define IR_BIT PORTZ06_BIT
-#define IR_TRIS PORTZ06_TRIS
-#define IR_MAIN_SELECT
-#define IR_MAIN_SELECT_TRIS
-#define IR_ANGLE_SELECT
-#define IR_ANGLE_SELECT_TRIS
+// ------------------ IR Ports ----------------------
+// *********** ADC definition in TapeSensor.h ************
+#ifndef IR_ADC
+#define IR_READ_BIT PORTW06_BIT
+#define IR_READ_TRIS PORTW06_TRIS
+#else
+// ADC thresholds
+#define HIGH_THRESHOLD 0x290
+#define LOW_THRESHOLD 0x0d0
+#define FLAT_THRESHOLD 0x1f0
+#endif
 
-#define COUNTMAX 0x4
-#define SHIFTAMOUNT 0x1 // amount to divide by (2)
+#define IR_MAIN_SELECT PORTX10_LAT
+#define IR_MAIN_SELECT_TRIS PORTX10_TRIS
+#define IR_ANGLE_SELECT PORTX11_LAT
+#define IR_ANGLE_SELECT_TRIS PORTX11_TRIS
 
-// Delay times
-#define READDELAY 2 // msecs
+#define COUNTMAX 0x8
+#define SHIFTAMOUNT 0x3 // amount to divide by (2)
+
 
 /*******************************************************************************
  * PRIVATE VARIABLES                                                           *
  ******************************************************************************/
 
 enum irIndex {IR_MAIN_I, IR_ANGLE_I};
-enum irSelect {OFF, TOGGLE};
+enum irSelect {OFF, ANGLE, MAIN};
 static unsigned char irCounter[] = {0, 0}; // counter values
-static unsigned int irPort[] = {0, 0}; // IR bit vlaues
-static unsigned int irSelectPort[] = {IR_MAIN_SELECT, IR_ANGLE_SELECT};
-static unsigned char irState[] = {0, 0};
+static unsigned int irPort[] = {0, 0}; // Always has last reading
+//static unsigned char irSelectPort[] = {IR_MAIN_SELECT, IR_ANGLE_SELECT};
+static unsigned char irFound[] = {0, 0};
+
+#ifdef IR_ADC
+static unsigned int irReading[] = {0, 0};
+static unsigned int irThreshold[] = {LOW_THRESHOLD, LOW_THRESHOLD};
+#endif
 
 /**
 static unsigned int const ledPortMap[] = {
@@ -67,7 +84,7 @@ static unsigned int const ledPortMap[] = {
  */
 
 static unsigned char timesRead = 0;
-static enum {init,read,wait} irState;
+static enum { init, read, waitOn, waitOff} irState = init;
 static char mainIsSelected = 0;
 
 
@@ -79,8 +96,8 @@ static void UpdateIRCounter();
 static void ReadIR();
 static void UpdateIRState();
 static void ClearIRCounters();
-static char SeesIR(int index);
-static void ToggleIR();
+static char SeesIR(unsigned int index);
+static void SwitchIR(unsigned int select);
 
 /*******************************************************************************
  * PRIVATE FUNCTIONS                                                           *
@@ -95,13 +112,21 @@ static void UpdateIRCounter() {
     ReadIR();
     if (mainIsSelected) {
         // update main detector counter
+#ifndef IR_ADC
         if (irPort[IR_MAIN_I] && irCounter[IR_MAIN_I] < COUNTMAX )
             irCounter[IR_MAIN_I] += 1;
+#else
+        irReading[IR_MAIN_I] += irPort[IR_MAIN_I]; // ADC value
+#endif
     }
     else {
         // update angle detector counter
+#ifndef IR_ADC
         if (irPort[IR_ANGLE_I] && irCounter[IR_ANGLE_I] < COUNTMAX )
             irCounter[IR_ANGLE_I] += 1;
+#else
+        irReading[IR_ANGLE_I] += irPort[IR_ANGLE_I]; // ADC value
+#endif
     }
 }
 
@@ -111,10 +136,24 @@ static void UpdateIRCounter() {
  * @remark Reads the current selected IR sensor.
  * @date 2012.3.5 12:13 */
 static void ReadIR() {
-    if (mainIsSelected)
-        irPort[IR_MAIN_I] = IR_MAIN_BIT;
-    else
-        irPort[IR_ANGLE_I] = IR_ANGLE_BIT;
+    //printf("HER!");
+#ifndef IR_ADC
+    unsigned int reading = IR_READ_BIT;
+#else
+    unsigned int reading = ReadADPin(IR_READ);
+    printf("\nADC: %x", reading);
+#endif
+    if (mainIsSelected) {
+        printf(" -- main");
+              
+        irPort[IR_MAIN_I] = reading;
+    }
+    else {
+        printf(" -- angle");
+        irPort[IR_ANGLE_I] = reading;
+    }
+    printf(" -- m:%x a:%x", IR_MAIN_SELECT, IR_ANGLE_SELECT);
+
 }
 
 
@@ -126,6 +165,7 @@ static void ReadIR() {
  *         than zero.
  * @date 2012.3.5 12:13 */
 static char SeesIR(unsigned int index) {
+#ifndef IR_ADC
     // divide and offset
     if (irCounter[index] > 0) {
         irCounter[index] -= 1;
@@ -133,6 +173,20 @@ static char SeesIR(unsigned int index) {
     }
 
     return irCounter[index] > 0;
+#else
+    irReading[index] >>= SHIFTAMOUNT;
+    printf("\nReading: %x", irReading[index]);
+    //if (irReading[index] >= ON_THRESHOLD) {
+    if (irReading[index] >= irThreshold[index]) {
+        //irThreshold[index] = LOW_THRESHOLD;
+        printf(" -- HIGH");
+        return TRUE;
+    }
+    //irThreshold[index] = HIGH_THRESHOLD;
+     printf(" -- LOW\n");
+    return FALSE;
+#endif
+
 }
 
 /**
@@ -142,10 +196,10 @@ static char SeesIR(unsigned int index) {
  * @date 2012.3.5 12:13 */
 static void UpdateIRState() {
     if (mainIsSelected) {
-        irState[IR_MAIN_I] = SeesIR(IR_MAIN_I);
+        irFound[IR_MAIN_I] = SeesIR(IR_MAIN_I);
     }
     else {
-        irState[IR_MAIN_I] = SeesIR(IR_MAIN_I);
+        irFound[IR_ANGLE_I] = SeesIR(IR_ANGLE_I);
     }
 }
 
@@ -156,30 +210,43 @@ static void UpdateIRState() {
 static void ClearIRCounters() {
     int i;
     for(i = 0; i < SENSORCOUNT; i++) {
+#ifndef IR_ADC
         irCounter[i] = 0;
+#else
+        printf("RESET!\n");
+        irReading[i] = 0;
+#endif
     }
+
 }
 
 /**
- * @Function: ToggleIR
- * @param select, optionally toggle or disable sensors (default=TOGGLE)
- * @remark Toggles between the main and angle beacons, and activates
+ * @Function: SwitchIR
+ * @param select, MAIN, ANGLE, or OFF
+ * @remark Switch between the main and angle beacons, and activates
  *         the appropriate select port.
  * @date 2012.3.5 12:47 */
-static void ToggleIR(unsigned int select=TOGGLE) {
-    if (select == TOGGLE)
-        mainIsSelected ^= 1; // toggle between
+static void SwitchIR(unsigned int select) {
+    /*
+    if (select == MAIN) {
+        mainIsSelected = 1
+    }
     else
         mainIsSelected = 0;
+     */
 
     
-    // iterate through select ports and flip the bits
-    int i;
-    for (i = 0; i < SENSORCOUNT; i++) {
-        if (select == TOGGLE)
-            irSelectPort[i] ^= 1;
-        else
-            irSelectPort[i] = 0;
+    if (select == ANGLE) {
+        IR_MAIN_SELECT = !0;
+        IR_ANGLE_SELECT = !1;
+    }
+    else if (select == MAIN) {
+        IR_ANGLE_SELECT = !0;
+        IR_MAIN_SELECT = !1;
+    }
+    else {
+        IR_MAIN_SELECT = !0;
+        IR_ANGLE_SELECT = !0;
     }
 }
 
@@ -193,14 +260,16 @@ char IR_Init() {
     InitTimer(TIMER_NUM, UPDATE_DELAY);
 
     // Define input/outputs
-    IR_TRIS = 1;
+    #ifndef IR_ADC
+    IR_READ_TRIS = 1;
+    #endif
     IR_MAIN_SELECT_TRIS = 0;
     IR_ANGLE_SELECT_TRIS = 0;
 
     // Enable the main beacon
+    SwitchIR(OFF);
     mainIsSelected = 1;
-    irSelectPort[IR_MAIN_I] = 1;
-    irState = wait;
+    irState = waitOff;
 
 
     dbprintf("\nIR sensors initialized (%d)", SENSORCOUNT);
@@ -210,7 +279,7 @@ char IR_Init() {
 }
 
 char IR_HandleSM() {
-    switch (irSate) {
+    switch (irState) {
         case read:
             // read a sensor
             UpdateIRCounter();
@@ -221,19 +290,40 @@ char IR_HandleSM() {
                 // switch beacons
                 ClearIRCounters();
                 timesRead = 0;
-                ToggleIR();
+                SwitchIR(OFF);
+                mainIsSelected ^= 1;
+                irState = waitOff;
+                InitTimer(TIMER_NUM, UPDATE_DELAY);
+                break;
             }
     
             InitTimer(TIMER_NUM, UPDATE_DELAY);
-            irState = wait;
+            irState = waitOn;
             break;
 
-        case wait:
+        case waitOff:
             if (IsTimerExpired(TIMER_NUM)) {
+                //printf("\nExpired!!");
+                if (mainIsSelected) {
+                    SwitchIR(MAIN);
+                }
+                else {
+                    SwitchIR(ANGLE);
+                }
+                InitTimer(TIMER_NUM, UPDATE_DELAY);
+                irState = waitOn;
+            }
+
+            break;
+        case waitOn:
+            if (IsTimerExpired(TIMER_NUM)) {
+                //printf("\nExpired!!");
                 irState = read;
             }
 
-        case default:
+            break;
+
+        default:
             dbprintf("\nHorrible Error");
             return ERROR;
             break;
@@ -242,16 +332,24 @@ char IR_HandleSM() {
 }
 
 char IR_MainTriggered() {
-    return irSate[IR_MAIN_I];
+    return irFound[IR_MAIN_I];
 }
 
 char IR_AngleTriggered() {
-    return irSate[IR_ANGLE_I];
+    return irFound[IR_ANGLE_I];
+}
+
+char IR_MainReading() {
+    return irPort[IR_MAIN_I];
+}
+
+char IR_AngleReading() {
+    return irPort[IR_ANGLE_I];
 }
 
 char IR_End() {
     StopTimer(TIMER_NUM);
-    ToggleIR(OFF);
+    SwitchIR(OFF);
 
     return SUCCESS;
 }
@@ -259,7 +357,7 @@ char IR_End() {
 /*******************************************************************************
  * TEST HARNESS                                                                *
  ******************************************************************************/
-#ifdef BUMP_TEST
+#ifdef IR_TEST
 #ifndef DEBUG_VERBOSE
 #define DEBUG_VERBOSE
 #endif
@@ -276,26 +374,41 @@ int main(void) {
 
     INTEnableSystemMultiVectoredInt();
     IR_Init();
+    AD_Init( IR_READ );
 
     while(1) {
-
+        IR_HandleSM();
+/*
         if (mainIsSelected) {
-            mainSelected = '*';
-            angleSelected = '';
+            mainSelected = 'x';
+            angleSelected = '_';
         }
         else {
-            mainSelected = '';
-            angleSelected = '*';
+            mainSelected = '_';
+            angleSelected = 'x';
         }
+ * */
 
+         //printf("\nTrig: %cMain=%x, %cAngle=%x", mainSelected, IR_MainTriggered(),
+         //   angleSelected, IR_AngleTriggered());
+#ifndef IR_ADC
+         printf("\nCount: Main=%x, Angle=%x", irCounter[IR_MAIN_I], irCounter[IR_ANGLE_I]);
+#else
+        // printf("\nADC: %cMain=%x, %cAngle=%x",mainSelected, irPort[IR_MAIN_I],
+         //angleSelected, irPort[IR_ANGLE_I]);
+         if (i >= 100) {
+            //printf("\nADC: %x", ReadADPin(IR_READ));
+            i = 0;
+         }
+         i++;
+#endif
+         //printf("\nReading: Main=%x, Angle=%x\n", irPort[IR_MAIN_I], irPort[IR_ANGLE_I]);
 
-        printf("\n%cMain: bit=%c count=%c state=%c",mainSelected,
-            irPort[IR_MAIN_I], irCounter[IR_MAIN_I], IR_MainTriggered());
-        printf("\n%cAngle: bit=%c count=%c state=%c",angleSelected,
-            irPort[IR_ANGLE_I], irCounter[IR_ANGLE_I], IR_AngleTriggered());
 
         while (!IsTransmitEmpty()); // bad, this is blocking code
     } // end of loop
 
 
     IR_End();
+}
+#endif

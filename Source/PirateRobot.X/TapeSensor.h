@@ -2,16 +2,16 @@
  * File:   TapeSensor.h
  * Author: dagoodma, hahernan, jurjohns
  *
- * Public interface for the TapeSensor module. Tape sensors are
- * initialized, and then the event checker and servicer functions
- * (Tape_Event and Tape_Service) are registered externally by the
- * caller.
+ * Public interface for the TapeSensor module. Tape sensors ports are
+ * initialized externally by the caller using AD_Init.
  *
  * Created on February 25, 2012, 7:50 PM
  */
 
 #ifndef TapeSensor_H
 #define TapeSensor_H
+
+#include "PORTS.h"
 
 /*******************************************************************************
  * PUBLIC #DEFINES                                                             *
@@ -27,6 +27,18 @@
 #define TRUE 1
 #endif
 
+enum sensorIndex { TAPE_LEFT_I, TAPE_CENTER_I, TAPE_RIGHT_I, TAPE_BACK_I,
+    TAPE_ARMFRONT_I, TAPE_ARMLEFT_I, TAPE_ARMRIGHT_I };
+
+
+//--------------- Photodetectors --------------
+#define TAPE_LEFT   AD_PORTV5
+#define TAPE_CENTER AD_PORTV6
+#define TAPE_RIGHT AD_PORTV7
+#define TAPE_BACK AD_PORTV8
+#define TAPE_ARMFRONT AD_PORTW3
+#define TAPE_ARMLEFT AD_PORTW4
+#define TAPE_ARMRIGHT AD_PORTW5
 
 
 /*
@@ -121,5 +133,24 @@ char Tape_ArmLeftTriggered();
  *         triggered.
  * @date 2012.2.27 05:42 */
 char Tape_ArmRightTriggered();
+
+/**
+ * @Function: Tape_AnyTriggered
+ * @return TRUE or FALSE value
+ * @remark Returns a TRUE value if any tape sensor is triggered.
+ * @date 2012.2.27 05:42 */
+char Tape_AnyTriggered();
+
+/**
+ * @Function: Tape_AnyRightTriggered
+ * @return TRUE or FALSE value
+ * @remark Returns a TRUE value if right tape sensor or any arm sensor
+ *  triggered is triggered.
+ * @date */
+char Tape_AnyRightTriggered();
+
+
+void Tape_SetOnTapeThreshold(unsigned int index);
+void Tape_SetOffTapeThreshold(unsigned int index);
 
 #endif

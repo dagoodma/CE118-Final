@@ -8,11 +8,13 @@
       <itemPath>Bumper.h</itemPath>
       <itemPath>Drive.h</itemPath>
       <itemPath>Gate.h</itemPath>
+      <itemPath>IR_new.h</itemPath>
       <itemPath>include/LED.h</itemPath>
       <itemPath>include/PORTS.h</itemPath>
       <itemPath>include/RCServo.h</itemPath>
       <itemPath>include/SES.H</itemPath>
       <itemPath>TapeSensor.h</itemPath>
+      <itemPath>C:/Users/jurjohns/Dropbox/CE118_Final/Source/PirateRobot.X/Util.h</itemPath>
       <itemPath>include/bits.h</itemPath>
       <itemPath>include/pwm.h</itemPath>
       <itemPath>include/serial.h</itemPath>
@@ -39,9 +41,12 @@
       <itemPath>Bumper.c</itemPath>
       <itemPath>Drive.c</itemPath>
       <itemPath>Gate.c</itemPath>
+      <itemPath>IR_new.c</itemPath>
+      <itemPath>LED.c</itemPath>
       <itemPath>src/PORTS.c</itemPath>
       <itemPath>src/RCServo.c</itemPath>
       <itemPath>TapeSensor.c</itemPath>
+      <itemPath>C:/Users/jurjohns/Dropbox/CE118_Final/Source/PirateRobot.X/Util.c</itemPath>
       <itemPath>main.c</itemPath>
       <itemPath>src/pwm.c</itemPath>
       <itemPath>src/serial.c</itemPath>
@@ -54,7 +59,7 @@
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
-    <Elem>../../../../../jurjohns/Dropbox/CE118_Final/Source/PirateRobot.X/include</Elem>
+    <Elem>C:\Users\jurjohns\Dropbox\CE118_Final\Source\PirateRobot.X</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -63,9 +68,9 @@
         <developmentServer>localhost</developmentServer>
         <targetDevice>PIC32MX320F128H</targetDevice>
         <targetHeader></targetHeader>
-        <platformTool>PICkit3PlatformTool</platformTool>
+        <platformTool>Simulator</platformTool>
         <languageToolchain>C32</languageToolchain>
-        <languageToolchainVersion>2.02</languageToolchainVersion>
+        <languageToolchainVersion>2.01</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
       <compileType>
@@ -91,7 +96,7 @@
         <property key="preprocessor-macros" value=""/>
         <property key="additional-warnings" value="false"/>
         <property key="extra-include-directories"
-                  value="C:\Users\hahernan\Dropbox\CE118_Final\Source\PirateRobot.X\include"/>
+                  value="C:\Users\jurjohns\Dropbox\CE118_Final\Source\PirateRobot.X\include"/>
         <property key="post-instruction-scheduling" value="default"/>
         <property key="enable-app-io" value="false"/>
         <property key="enable-unroll-loops" value="false"/>
@@ -111,10 +116,10 @@
         <property key="preprocessor-macros" value=""/>
         <property key="exclude-floating-point-library" value="false"/>
         <property key="list-file" value=""/>
-        <property key="list-source" value="false"/>
         <property key="list-assembly" value="false"/>
-        <property key="warning-level" value=""/>
+        <property key="list-source" value="false"/>
         <property key="extra-include-directories-for-preprocessor" value=""/>
+        <property key="warning-level" value=""/>
         <property key="list-section-info" value="false"/>
         <property key="omit-forms" value="false"/>
         <property key="list-symbols" value="false"/>
@@ -143,13 +148,14 @@
         <property key="input-libraries" value=""/>
         <property key="enable-check-sections" value="false"/>
         <property key="symbol-stripping" value=""/>
-        <property key="extra-lib-directories" value=""/>
+        <property key="extra-lib-directories"
+                  value="C:\Users\dagoodma\Dropbox\CE118_Final\Source\PirateRobot.X;C:\Users\dagoodma\Dropbox\CE118_Final\Source\PirateRobot.X\src"/>
       </C32-LD>
       <C32Global>
         <property key="legacy-libc" value="false"/>
       </C32Global>
-      <PICkit3PlatformTool>
-      </PICkit3PlatformTool>
+      <Simulator>
+      </Simulator>
     </conf>
   </confs>
 </configurationDescriptor>

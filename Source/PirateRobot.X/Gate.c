@@ -16,7 +16,7 @@
  * PRIVATE #DEFINES                                                            *
  ******************************************************************************/
 //#define GATE_TEST
-#define DEBUG_VERBOSE
+//#define DEBUG_VERBOSE
 #ifdef DEBUG_VERBOSE
     #define dbprintf(...) printf(__VA_ARGS__)
 #else
@@ -29,7 +29,7 @@
 #define SERVO RC_PORTV04
 
 // Positions for open and close
-#define CLOSE_WIDTH 1700
+#define CLOSE_WIDTH 2000
 #define OPEN_WIDTH 1000
 
 /*******************************************************************************
@@ -48,7 +48,7 @@
 char Gate_Close() {
 
     RC_SetPulseTime(SERVO, CLOSE_WIDTH);
-    dbprintf("\nGate closed (%d)", CLOSE_WIDTH);
+    //dbprintf("\nGate closed (%d)", CLOSE_WIDTH);
     return SUCCESS;
 }
 
@@ -60,7 +60,7 @@ char Gate_Close() {
 char Gate_Open() {
 
     RC_SetPulseTime(SERVO, OPEN_WIDTH);
-    dbprintf("\nGate released (%d)", OPEN_WIDTH);
+    //dbprintf("\nGate released (%d)", OPEN_WIDTH);
     return SUCCESS;
 }
 /**

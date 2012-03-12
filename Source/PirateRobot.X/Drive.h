@@ -24,6 +24,15 @@
 #define TRUE 1
 #endif
 
+#define HALF_SPEED 5
+#define FULL_SPEED 10
+#define MID_SPEED 7
+#define MIN_SPEED 3
+
+enum turnType{pivot, rightAng, soft, hard};
+enum turnDir{right, left, same, opposite};
+
+
 /*******************************************************************************
  * PUBLIC FUNCTION PROTOTYPES                                                  *
  ******************************************************************************/

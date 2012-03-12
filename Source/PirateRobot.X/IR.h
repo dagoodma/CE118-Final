@@ -27,6 +27,9 @@
 #define TRUE 1
 #endif
 
+#define IR_READ AD_PORTW6
+#define IR_ADC
+
 
 /*******************************************************************************
  * PUBLIC FUNCTION PROTOTYPES                                                  *
@@ -65,6 +68,19 @@ char IR_MainTriggered();
  * @date 2012.3.5 12:47 */
 char IR_AngleTriggered();
 
+/**
+ * @Function: IR_MainReading
+ * @return ADC value for main sensor (0-1023)
+ * @remark Returns the last main sensor reading
+ * @date 2012.3.5 12:47 */
+char IR_MainReading();
+
+/**
+ * @Function: IR_AngleReading
+ * @return ADC value for main sensor (0-1023)
+ * @remark Returns the last angled sensor reading
+ * @date 2012.3.5 12:47 */
+char IR_AngleReading();
 
 /**
  * @Function: IR_End

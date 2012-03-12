@@ -28,9 +28,9 @@
  * @return SUCCESS or ERROR
  * @remark Holds the gate closed
  * @author David Goodman
- * /
+ */
 
-char Gate_Close() ;
+char Gate_Close();
 
 
 /**
@@ -39,6 +39,7 @@ char Gate_Close() ;
  * @return SUCCESS or ERROR
  * @remark Releases the gate
  * @author David Goodman
+ */
  
 char Gate_Open();
 
@@ -49,7 +50,7 @@ char Gate_Open();
  * @return Success or Error
  * @remark Initializes the servo pin used and closes the gate
  * @author Justin Johnson
- 
+ */
 char Gate_Init();
 
 /**
