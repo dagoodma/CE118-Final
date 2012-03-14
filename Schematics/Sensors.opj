@@ -53,7 +53,8 @@
       (Path "Design Resources")
       (Path "Design Resources" ".\sensors.dsn")
       (Path "Design Resources" ".\sensors.dsn" "SCHEMATIC1")
-      (Select "Design Resources"))
+      (Select "Design Resources" ".\sensors.dsn" "SCHEMATIC1"
+         "collisionSensors"))
     (HierarchyView)
     (Doc
       (Type "COrCapturePMDoc")
@@ -63,21 +64,21 @@
     (Doc
       (Type "COrSchematicDoc")
       (Frame
-        (Placement "44 2 3 -1 -1 -8 -30 75 1758 75 589")
-        (Scroll "-453 0")
+        (Placement "44 0 1 -1 -1 -8 -30 50 1696 50 564")
+        (Scroll "-314 0")
         (Zoom "100")
         (Occurrence "/"))
-      (Path "C:\USERS\DAGOODMA\DROPBOX\CE118_FINAL\SCHEMATICS\SENSORS.DSN")
+      (Path "C:\USERS\JURJOHNS\DROPBOX\CE118_FINAL\SCHEMATICS\SENSORS.DSN")
       (Schematic "SCHEMATIC1")
-      (Page "collisionSensors"))
+      (Page "tapeSensors"))
     (Doc
       (Type "COrSchematicDoc")
       (Frame
-        (Placement "44 0 1 -1 -1 -8 -30 100 1783 100 614")
-        (Scroll "-332 0")
+        (Placement "44 2 3 -1 -1 -8 -30 75 1721 75 589")
+        (Scroll "-434 0")
         (Zoom "100")
         (Occurrence "/"))
-      (Path "C:\USERS\DAGOODMA\DROPBOX\CE118_FINAL\SCHEMATICS\SENSORS.DSN")
+      (Path "C:\USERS\JURJOHNS\DROPBOX\CE118_FINAL\SCHEMATICS\SENSORS.DSN")
       (Schematic "SCHEMATIC1")
-      (Page "tapeSensors")))
+      (Page "collisionSensors")))
   (LastUsedLibraryBrowseDirectory "C:\Cadence\SPB_16.5\tools\capture\library"))

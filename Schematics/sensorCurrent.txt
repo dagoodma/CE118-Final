@@ -1,0 +1,9 @@
+Sensor Current (lp2950 max_typ = 160 mA)
+
++ 69 mA (tape leds)
++ 3.5 mA (tape detectors)
++ 98 uA (bumpers)
+-----
+72.5 mA at peak
+
+

@@ -118,11 +118,13 @@ char Drive_Init(void) {
 }
 
 char Drive_Update(void) {
+    /*
     if (IsTimerExpired(TIMER_NUM)) {
         SetSpeed(A, motorSpeed[A]);
         SetSpeed(B, motorSpeed[B]);
         InitTimer(TIMER_NUM, UPDATE_DELAY);
     }
+     */
     return SUCCESS;
 }
 
@@ -288,6 +290,12 @@ char main(){
         printf("\nFORWARD! speed=%u pwm=%u", motorSpeed[A], motorPWMValue[A]);
         DELAY(); Drive_Stop(); DELAY();
        }
+       Drive_Forward(10);
+       DELAY();
+       Drive_Forward(5);
+       DELAY();
+       Drive_Reverse(10);
+       DELAY();
         /*
         Drive_Forward(10);
         DELAY();

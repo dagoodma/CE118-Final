@@ -149,6 +149,13 @@ char Tape_AnyTriggered();
  * @date */
 char Tape_AnyRightTriggered();
 
+/**
+ * @Function: Tape_AnyRightTriggered
+ * @return TRUE or FALSE value
+ * @remark Returns a TRUE value if any front tape sensor is triggered.
+ * @date */
+char Tape_AnyFrontTriggered();
+
 
 void Tape_SetOnTapeThreshold(unsigned int index);
 void Tape_SetOffTapeThreshold(unsigned int index);

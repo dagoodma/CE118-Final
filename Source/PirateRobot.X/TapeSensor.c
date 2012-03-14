@@ -32,8 +32,8 @@
 #define TAPESENSORCOUNT 7
 #define TAPEPINCOUNT (TAPESENSORCOUNT * 2)
 
-#define TIMESTOREAD 4 // MUST BE EVEN #
-#define TIMESTOSHIFT 2 // divides by 2^2 == 4
+#define TIMESTOREAD 2 // MUST BE EVEN #
+#define TIMESTOSHIFT 1 // divides by 2^2 == 4
 
 #define TIMESTOREAD2 3
 
@@ -44,11 +44,11 @@
 
 // Sensor thresholds
 #ifdef TAPE_TEST
-#define ONTAPE_THRESHOLD 0x45
-#define OFFTAPE_THRESHOLD 0x57
+#define ONTAPE_THRESHOLD 0x22
+#define OFFTAPE_THRESHOLD 0x30
 #else
-#define ONTAPE_THRESHOLD 0x2C
-#define OFFTAPE_THRESHOLD 0x32
+#define ONTAPE_THRESHOLD 0x22
+#define OFFTAPE_THRESHOLD 0x35
 #endif
 
 //--------------- Photodetectors --------------
@@ -458,14 +458,14 @@ char Tape_End() {
 }
 
 void Tape_SetOnTapeThreshold(unsigned int index) {
-    unsigned int newOnTapeThreshold = sensorReading[index];
+    unsigned int newOnTapeThreshold = sensorReading[index]+5;
     printf("\nNew on tape threshold=%d",newOnTapeThreshold);
     UpdateThresholds(newOnTapeThreshold, offTapeThreshold);
 }
 void Tape_SetOffTapeThreshold(unsigned int index) {
     //unsigned int newOffTapeThreshold = onTapeThreshold
     //    + ((sensorReading[index] - onTapeThreshold) / 3);
-    unsigned int newOffTapeThreshold = sensorReading[index];
+    unsigned int newOffTapeThreshold = sensorReading[index]-5;
 
 
     printf("\nNew off tape threshold=%d",newOffTapeThreshold);
@@ -510,6 +510,10 @@ char Tape_AnyTriggered() {
 char Tape_AnyRightTriggered() {
     return Tape_RightTriggered() || Tape_ArmLeftTriggered() ||
             Tape_ArmFrontTriggered() || Tape_ArmRightTriggered();
+}
+
+char Tape_AnyFrontTriggered() {
+    return Tape_AnyRightTriggered || Tape_CenterTriggered || Tape_LeftTriggered;
 }
 
 static unsigned int LeftReading() { return sensorReading[TAPE_LEFT_I]; }
