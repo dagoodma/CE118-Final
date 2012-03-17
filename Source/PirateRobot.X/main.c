@@ -49,15 +49,19 @@
 #define TIMER_RETURN 12
 #define TIMER_CHARGE 13
 #define TIMER_OBSTACLE 14
+#define MASTER_TIMER 15
+
+#define MASTER_TIMEOUT 11000
 
 #define START_DELAY 2500
 
 #define CHARGE_DUMP_DELAY 800
 #define CHARGE_REVERSE_DELAY 1750
 #define CHARGE_TURN_DELAY 620
-#define CHARGE_START_DELAY 1100
+#define CHARGE_START_DELAY 1550
 
 #define AVOID_FORWARD_DELAY 2750
+static int avoidForwardDelay = AVOID_FORWARD_DELAY;
 #define AVOID_TIMEOUT 4600
 #define AVOID_REVERSE_DELAY 1300
 #define AVOID_TURN_DELAY 1000
@@ -66,16 +70,17 @@
 
 #define OBSTACLE_TURN_DELAY 1000
 #define OBSTACLE_FORWARD_DELAY 2750
+static int obstacleForwardDelay = OBSTACLE_FORWARD_DELAY;
 #define OBSTACLE_REVERSE_DELAY 1300
 
 
 #define LEFT_SEARCH_TIME 2750 // time before trying other direction
 
 #define FIND_TURN_TIMEOUT 2900 // time til turn gives up
-#define FIND_TURN_DELAY 800 // time to start checking right arm
+#define FIND_TURN_DELAY 790 // time to start checking right arm
 
 #define FOLLOW_SEARCH_TIMEOUT 3000 // time to give up right turn
-#define FOLLOW_ACUTE_DELAY 950
+#define FOLLOW_ACUTE_DELAY 750
 #define FOLLOW_ACUTE_TIMEOUT 5200
 
 #define CALIBRATE_DELAY 1500
@@ -86,10 +91,9 @@
 #define CALIBRATE_TAPEHIGHEST_I TAPE_ARMFRONT_I
 #define CALIBRATE_TAPELOWEST_I TAPE_ARMFRONT_I
 
-#define RETURN_COLLIDE_TIMEOUT 5000
-#define RETURN_LEFT_DELAY 900 // time to turn left for 90 deg
+#define RETURN_LEFT_DELAY 745 // time to turn left for 90 deg
 #define RETURN_RIGHT_DELAY 2550 //time to turn right on left wall rebound
-#define RETURN_TAPE_DELAY 2350 // time to ignore tape sensor triggers
+#define RETURN_TAPE_DELAY 2000 // time to ignore tape sensor triggers
 
 
 /*******************************************************************************
@@ -192,7 +196,7 @@ void DuringAvoidTapeSM();
 void DuringFindTapeSM();
 void DuringFollowTapeSM();
 void DuringAvoidObstacleSM();
-void DuringReturnIsland();
+void DuringReturnIslandSM();
 
 void UpdateChargeEvent();
 void UpdateAvoidTapeEvent();
@@ -219,19 +223,21 @@ void InitAvoidObstacleSM();
 
 // -------- others -------
 void wait();
+unsigned int DecrementTimer(unsigned int timeMax, unsigned int timeCur);
 
 void DuringReturnIslandSM() {
 
 #ifdef DEBUG
-     //printf("\nReturn  STATE=%s EVENT=%s", returnStates[returnState], returnEvents[returnEvent]);
+     //printf("\nReturn  STATE=%u EVENT=%u", returnState, returnEvent);
 #endif
     UpdateReturnIslandEvent();
 
     switch(returnState) {
         case return_left:
+            //printf("A");
             if (returnEvent == return_lefted) {
-                InitTimer(TIMER_RETURN, RETURN_COLLIDE_TIMEOUT);
-                InitTimer(TIMER_MOVE, RETURN_TAPE_DELAY);
+                //InitTimer(TIMER_RETURN, RETURN_COLLIDE_TIMEOUT);
+                InitTimer(TIMER_RETURN, RETURN_TAPE_DELAY);
                 returnState = return_forward;
             }
             else {
@@ -239,6 +245,7 @@ void DuringReturnIslandSM() {
             }
             break;
         case return_forward:
+            //printf("B");
             if (returnEvent == return_hitobstacle) {
                 returnState = return_avoidobstacle;
                 InitAvoidObstacleSM();
@@ -260,16 +267,18 @@ void DuringReturnIslandSM() {
             }
             else {
 
-                Drive_Forward(MID_SPEED);
+                Drive_Forward(HALF_SPEED);
             }
             break;
         case return_avoidobstacle:
+            //printf("C");
             DuringAvoidObstacleSM();
             if (avoidEvent == obstacle_forwarded) {
                 returnState = return_forward;
             }
             break;
         case return_right:
+            //printf("D");
             if (returnEvent == return_righted)
                 returnState = return_forward;
             else
@@ -289,23 +298,24 @@ void DuringReturnIslandSM() {
 void UpdateReturnIslandEvent() {
     returnEvent = return_none;
 
+
     switch(returnState) {
         case return_left:
-            if (IsTimerExpired(TIMER_MOVE))
+            if (IsTimerExpired(TIMER_RETURN))
                 returnEvent = return_lefted;
             break;
         case return_forward:
-            if (!IsTimerExpired(TIMER_RETURN) && Bumper_AnyTriggered())
+            if (Bumper_AnyTriggered())
                 returnEvent = return_hitobstacle;
             else if ((Tape_ArmLeftTriggered() || Tape_ArmRightTriggered() || Tape_ArmFrontTriggered() ||
-                    Tape_RightTriggered() || Tape_CenterTriggered()) && IsTimerExpired(TIMER_MOVE))
+                    Tape_RightTriggered() || Tape_CenterTriggered()) && IsTimerExpired(TIMER_RETURN))
             //else if (Tape_AnyTriggered() && IsTimerExpired(TIMER_MOVE))
                 returnEvent = return_hittape;
             /**
             else if (IsTimerExpired(TIMER_RETURN) && Bumper_AnyTriggered())
                 returnEvent = return_hitwall;
              **/
-            else if (Tape_LeftTriggered() && IsTimerExpired(TIMER_MOVE))
+            else if (Tape_LeftTriggered() && IsTimerExpired(TIMER_RETURN))
                 returnEvent = return_goright;
             break;
         case return_avoidobstacle:
@@ -325,11 +335,15 @@ void UpdateReturnIslandEvent() {
 
 void DuringAvoidObstacleSM() {
     UpdateAvoidObstacleEvent();
+    #ifdef DEBUG
+     //printf("\nObstacle  STATE=%u EVENT=%u", obstacleState, obstacleEvent);
+#endif
 
     switch(obstacleState) {
         case obstacle_transition:
+            //printf("A");
             if (obstacleEvent == obstacle_goleft) {
-                InitTimer(TIMER_MOVE, OBSTACLE_TURN_DELAY);
+                InitTimer(TIMER_OBSTACLE, OBSTACLE_TURN_DELAY);
                 Drive_Turn(pivot, left, HALF_SPEED);
                 obstacleState = obstacle_left;
             }
@@ -337,7 +351,6 @@ void DuringAvoidObstacleSM() {
                 InitTimer(TIMER_OBSTACLE, OBSTACLE_TURN_DELAY);
                 Drive_Turn(pivot, right, HALF_SPEED);
                 obstacleState = obstacle_right;
-                printf("b");
             }
             else if (obstacleEvent == obstacle_goback) {
                 InitTimer(TIMER_OBSTACLE, OBSTACLE_REVERSE_DELAY);
@@ -350,11 +363,13 @@ void DuringAvoidObstacleSM() {
             }
             break;
         case obstacle_forward:
+            //printf("B");
             if (obstacleEvent == obstacle_forwarded) {
-                avoidState = avoid_transition;
+                obstacleState = obstacle_transition;
             }
             break;
         case obstacle_back:
+            //printf("C");
             if (obstacleEvent == obstacle_backed) {
                 InitTimer(TIMER_OBSTACLE, OBSTACLE_TURN_DELAY);
                 Drive_Turn(pivot,opposite,HALF_SPEED);
@@ -362,11 +377,13 @@ void DuringAvoidObstacleSM() {
             }
             break;
         default:
+            //printf("D");
             // obstacle_opposite, left, right
             if (obstacleEvent == obstacle_cleared) {
                 obstacleState = obstacle_forward;
                 Drive_Forward(HALF_SPEED);
-                InitTimer(TIMER_OBSTACLE, OBSTACLE_FORWARD_DELAY);
+                obstacleForwardDelay = DecrementTimer(OBSTACLE_FORWARD_DELAY, obstacleForwardDelay);
+                InitTimer(TIMER_OBSTACLE, obstacleForwardDelay);
             }
             break;
 
@@ -513,13 +530,18 @@ void DuringFollowTapeSM() {
     UpdateFollowTapeEvent();
 
   /*  if(time<(GetTime()-100)){
-     printf("\nFollow tape STATE=%s EVENT=%s", followStates[followState], followEvents[followEvent]);
+     
      time = GetTime();
     }
     */
+#ifdef DEBUG
+    //printf("\nFollow tape STATE=%u EVENT=%u", followState, followEvent);
+#endif
+
 
     switch (followState) {
         case follow_transition:
+            //printf("A");
             if (followEvent == follow_hit) {
                 Drive_Stop();
                 InitAvoidObstacleSM();
@@ -564,13 +586,15 @@ void DuringFollowTapeSM() {
             }
             break;
         case follow_avoidobstacle:
-
+            //printf("B");
             DuringAvoidObstacleSM();
             if (followEvent == follow_avoided)
                 followState = follow_transition;
             break;
         case follow_searchright:
+            //printf("C");
             if (followEvent == follow_searchfailed) {
+                InitTimer(TIMER_MOVE, FOLLOW_SEARCH_TIMEOUT);
                 followState = follow_searchleft;
             }
             else if (followEvent == follow_foundfront) {
@@ -582,12 +606,17 @@ void DuringFollowTapeSM() {
             }
             break;
         case follow_searchleft:
-            if (followEvent == follow_foundfront)
+            //printf("D");
+            if (followEvent == follow_searchfailed) {
+                followState = follow_transition;
+            }
+            else if (followEvent == follow_foundfront)
                 followState = follow_transition;
             else
                 Drive_Turn(pivot, left,  MIN_SPEED);
             break;
         case follow_acuteleft:
+            //printf("E");
             if (followEvent == follow_acuted) {
 
                 followState = follow_transition;
@@ -596,26 +625,31 @@ void DuringFollowTapeSM() {
                 followState = follow_transition;
             }
             else {
-                Drive_Turn(pivot, left, HALF_SPEED);
+                Drive_Turn(pivot, left, FULL_SPEED);
             }
             break;
         case follow_hardleft:
+            //printf("F");
             Drive_Turn(hard,left,MID_SPEED);
             followState = follow_transition;
             break;
         case follow_left:
+            //printf("G");
             Drive_Turn(hard,left,HALF_SPEED);
             followState = follow_transition;
             break;
         case follow_hardright:
+            //printf("H");
             Drive_Turn(hard,right,MID_SPEED);
             followState = follow_transition;
             break;
         case follow_right:
+            //printf("I");
             Drive_Turn(hard,right,HALF_SPEED);
             followState = follow_transition;
             break;
         case follow_forward:
+            //printf("J");
             Drive_Forward(HALF_SPEED);
             followState = follow_transition;
             break;
@@ -632,7 +666,7 @@ void UpdateFollowTapeEvent() {
 
     switch (followState) {
         case follow_transition:
-            if (Bumper_AnyTriggered() || ( IR_MainTriggered() && IR_AngleTriggered()))
+            if (Bumper_AnyTriggered() ) //|| ( IR_MainTriggered() && IR_AngleTriggered()))
                 followEvent = follow_hit;
             else if ((Tape_LeftTriggered() && ! Tape_RightTriggered() && IsTimerExpired(TIMER_FOLLOW)) ||
                     (Tape_LeftTriggered() && ! Tape_CenterTriggered() && IsTimerExpired(TIMER_FOLLOW)))
@@ -673,6 +707,8 @@ void UpdateFollowTapeEvent() {
         case follow_searchleft:
             if (Tape_ArmFrontTriggered())
                 followEvent = follow_foundfront;
+            else if (IsTimerExpired(TIMER_MOVE))
+                followEvent = follow_searchfailed;
             break;
         case follow_acuteleft:
             if (IsTimerExpired(TIMER_MOVE)
@@ -691,10 +727,13 @@ void UpdateFollowTapeEvent() {
  * @date 2012.3.6 08:30 */
 void DuringFindTapeSM() {
     UpdateFindTapeEvent();
-//    printf("\nFind tape STATE=%s EVENT=%s", findStates[findState], findEvents[findEvent]);
+#ifdef DEBUG
+    //printf("\nFind tape STATE=%u EVENT=%u", findState, findEvent);
+#endif
 
     switch (findState) {
         case find_forward:
+            //printf("A");
             if (findEvent == find_foundfront) {
                 InitTimer(TIMER_FIND, FIND_TURN_TIMEOUT);
                 InitTimer(TIMER_MOVE, FIND_TURN_DELAY);
@@ -710,19 +749,22 @@ void DuringFindTapeSM() {
             }
             break;
         case find_avoidobstacle:
-
+        //printf("B");
             DuringAvoidObstacleSM();
             if (findEvent == find_avoided)
                 findState = find_forward;;
             break;
         case find_turn:
-
+//printf("C");
             if (findEvent == find_found) {
                 // EXIT -- caller picks up
                 Drive_Stop();
             }
             else if (findEvent == find_timedout) {
                 findState = find_forward;
+                Drive_Forward(FULL_SPEED);
+                wait();
+                Drive_Stop();
                 ClearTimerExpired(TIMER_FIND);
             }
             else {
@@ -772,9 +814,9 @@ void UpdateFindTapeEvent() {
  * @date 2012.3.6 08:30 */
 void DuringTargetSM() {
     UpdateTargetEvent();
-//printf("\nHandling TargetSM STATE=%s, EVENT=%s", targetStates[targetState], targetEvents[targetEvent]);
+////printf("\nHandling TargetSM STATE=%s, EVENT=%s", targetStates[targetState], targetEvents[targetEvent]);
 #ifdef DEBUG
-     
+     //printf("\nHandling TargetSM STATE=%u, EVENT=%u", targetState, targetEvent);
 #endif
     /*
     switch (targetState) {
@@ -804,6 +846,7 @@ void DuringTargetSM() {
 
     switch (targetState) {
         case target_findmaxleft:
+            //printf("A");
             if (targetEvent == target_highestpast) {
                 targetState = target_returnmax;
                 Drive_Turn(pivot, right, MID_SPEED);
@@ -820,6 +863,7 @@ void DuringTargetSM() {
             }
             break;
         case target_findmaxright:
+            //printf("B");
             if (targetEvent == target_highestpast) {
                 targetState = target_returnmax;
                 Drive_Turn(pivot, left, MIN_SPEED);
@@ -833,6 +877,7 @@ void DuringTargetSM() {
             }
             break;
         case target_returnmax:
+            //printf("C");
             if (targetEvent == target_foundmax) {
                 Drive_Stop();
                 //wait();
@@ -844,7 +889,7 @@ void DuringTargetSM() {
             break;
 
 #ifdef DEBUG
-             //dbprintf("\nHorrible error occured!");
+             //db//printf("\nHorrible error occured!");
 #endif
 
     } // switch
@@ -891,7 +936,7 @@ void UpdateTargetEvent() {
             else if (reading <(highestIRSeen -100) && highestIRSeen >150) {
 
 #ifdef DEBUG
-                 //dbprintf("\nReading %u, highest %u", reading, highestIRSeen);
+                 //db////printf("\nReading %u, highest %u", reading, highestIRSeen);
 #endif
                 // found max and dropping
                 targetEvent = target_highestpast;
@@ -927,15 +972,16 @@ void UpdateTargetEvent() {
 void DuringChargeSM() {
     UpdateChargeEvent();
     #ifdef DEBUG
-    printf("\nHandling ChargeSM %u %u", chargeEvent, chargeState);
+    ////printf("\nHandling ChargeSM %u %u", chargeEvent, chargeState);
 #endif
 
 #ifdef DEBUG
-     //dbprintf("\nHandling ChargeSM %u", chargeEvent);
+     //db////printf("\nHandling ChargeSM %u", chargeEvent);
 #endif
 
     switch (chargeState) {
         case charge_forward:
+            ////printf("A");
             if (chargeEvent == charge_lostbeacon) {
                 // EXIT - caller picks this up
             }
@@ -955,12 +1001,14 @@ void DuringChargeSM() {
             }
             break;
         case charge_avoidtape:
+            //printf("B");
             DuringAvoidTapeSM();
             if (chargeEvent == charge_avoided)
                 chargeState = charge_forward;
 
             break;
         case charge_dump:
+            //printf("C");
             if (chargeEvent == charge_blocked) {
                 chargeState = charge_reverse;
                 InitTimer(TIMER_MOVE, CHARGE_REVERSE_DELAY);
@@ -971,6 +1019,7 @@ void DuringChargeSM() {
             }
             break;
         case charge_reverse:
+            //printf("D");
             if (chargeEvent == charge_reversed) {
                 chargeState = charge_turn;
                 Drive_Stop();
@@ -981,6 +1030,7 @@ void DuringChargeSM() {
             }
             break;
         case charge_turn:
+            //printf("E");
             if (chargeEvent == charge_finished) {
                 // EXIT - caller picks this up
                 Drive_Stop();
@@ -994,7 +1044,7 @@ void DuringChargeSM() {
             break;
 
 #ifdef DEBUG
-            //dbprintf("\nA horrible error occured!");
+            //db//printf("\nA horrible error occured!");
 #endif
     } // switch
 }
@@ -1056,10 +1106,11 @@ void DuringAvoidTapeSM() {
     UpdateAvoidTapeEvent();
 
 #ifdef DEBUG
-     //dbprintf("\nHandling AvoidSM STATE=%u EVENT=%u", avoidState, avoidEvent);
+     //printf("\nHandling AvoidSM STATE=%u EVENT=%u", avoidState, avoidEvent);
 #endif
     switch (avoidState) {
         case avoid_transition:
+            //printf("A");
             if (avoidEvent == avoid_goright) {
                 InitTimer(TIMER_AVOID, AVOID_TURN_DELAY);
                 avoidState = avoid_right;
@@ -1081,14 +1132,17 @@ void DuringAvoidTapeSM() {
             }
             break;
         case avoid_forward:
+            //printf("B");
             if (avoidEvent == avoid_forwarded)
                 avoidState = avoid_transition;
             break;
         default:
+            //printf("C");
             if (avoidEvent == avoid_cleared) {
                 avoidState = avoid_forward;
                 Drive_Forward(HALF_SPEED);
-                InitTimer(TIMER_AVOID, AVOID_FORWARD_DELAY);
+                avoidForwardDelay = DecrementTimer(AVOID_FORWARD_DELAY, avoidForwardDelay);
+                InitTimer(TIMER_AVOID, avoidForwardDelay);
             }
             break;
         
@@ -1144,7 +1198,7 @@ void DuringCalibrateSM() {
     UpdateCalibrateEvent();
 
 #ifdef DEBUG
-     //printf("\nHandling CalibrateSM STATE=%u EVENT=%u", calibrateState, calibrateEvent);
+     ////printf("\nHandling CalibrateSM STATE=%u EVENT=%u", calibrateState, calibrateEvent);
 #endif
     switch (calibrateState) {
         case calibrate_onthreshold:
@@ -1152,7 +1206,7 @@ void DuringCalibrateSM() {
                 Tape_SetOnTapeThreshold(CALIBRATE_TAPEHIGHEST_I);
 
 #ifdef DEBUG
-                 //printf("\nReady for off tape calibration. Trigger front bumper when done.");
+                 ////printf("\nReady for off tape calibration. Trigger front bumper when done.");
 #endif
                 InitTimer(TIMER_MOVE,CALIBRATE_DELAY);
                 CALIBRATE_INDICATOR = 0;
@@ -1215,7 +1269,7 @@ void UpdateCalibrateEvent() {
  * @date 2012.3.6 08:30 */
 void HandleTopSM() {
     #ifdef DEBUG
-    printf("\nTopsate: %u", topState);
+    //printf("\nTopstate: %u", topState);
     #endif
 
     // Sub state machines handle topEvents
@@ -1224,7 +1278,7 @@ void HandleTopSM() {
             DuringCalibrateSM();
 
 
-             //printf("\nHere with event=%d",calibrateEvent);
+             ////printf("\nHere with event=%d",calibrateEvent);
 
             if (calibrateEvent == calibrate_timedout
                     || calibrateEvent == calibrate_finished) {
@@ -1235,6 +1289,7 @@ void HandleTopSM() {
             break;
 
         case target:
+            //printf("a");
             DuringTargetSM();
             if (targetEvent == target_foundmax) {
                 //topState = hold;
@@ -1245,6 +1300,7 @@ void HandleTopSM() {
             break;
 
         case charge:
+            //printf("b");
             DuringChargeSM();
             if (chargeEvent == charge_finished)  {
                 // TODO code rest of state machine
@@ -1258,13 +1314,21 @@ void HandleTopSM() {
             }
             break;
         case find_tape:
+            //printf("c");
             DuringFindTapeSM();
             if (findEvent == find_found) {
                 InitFollowTapeSM();
                 topState = follow_tape;
             }
+            else if (IsTimerExpired(MASTER_TIMER)) {
+                Drive_Forward(FULL_SPEED);
+                wait();
+                Drive_Stop();
+                InitFindTapeSM();
+            }
             break;
         case follow_tape:
+            //printf("d");
             DuringFollowTapeSM();
             if (followEvent == follow_losttape) {
                 InitFindTapeSM();
@@ -1274,7 +1338,7 @@ void HandleTopSM() {
             else if (followEvent == follow_foundisland) {
 
 #ifdef DEBUG
-                 //printf("\nHERR!");
+                 ////printf("\nHERR!");
 #endif
                 topState = return_island;
                 InitReturnIslandSM();
@@ -1284,6 +1348,7 @@ void HandleTopSM() {
             // TODO code rest of state machine
 
         case return_island:
+            //printf("e");
             DuringReturnIslandSM();
             if (returnEvent == return_hittape){
                 InitFindTapeSM();
@@ -1295,7 +1360,7 @@ void HandleTopSM() {
             break;
 
 #ifdef DEBUG
-           //dbprintf("\nHorrible error occured!");
+           //db//printf("\nHorrible error occured!");
 #endif
     } // switch
  }
@@ -1321,13 +1386,13 @@ int main(void) {
             == SUCCESS) {
 
 #ifdef DEBUG
-         //dbprintf("\nADC initialized successfully.");
+         //db//printf("\nADC initialized successfully.");
 #endif
     }
     else {
 
 #ifdef DEBUG
-         //dbprintf("\nADC failed to initialize.");
+         //db//printf("\nADC failed to initialize.");
 #endif
     }
      */
@@ -1337,7 +1402,7 @@ int main(void) {
     AD_Init(adPins);
 
 #ifdef DEBUG
-     //printf("\nPins=%x", adPins);
+     ////printf("\nPins=%x", adPins);
 #endif
 
     // Initialize modules
@@ -1397,11 +1462,11 @@ int main(void) {
     InitStartState();
 
 #ifdef DEBUG
-     printf("\nReady, set...");
+     //printf("\nReady, set...");
     wait();
-     printf(" Go!");
+     //printf(" Go!");
 
-     //dbprintf("\nHello, I am working...");
+     //db//printf("\nHello, I am working...");
 #endif
 
 
@@ -1423,14 +1488,14 @@ int main(void) {
 
 
 #ifdef DEBUG
-         //printf("\nTopSTATE! %u", topState);
+         ////printf("\nTopSTATE! %u", topState);
 #endif
 
         if (topState == hold) {
                 goto exit;
             }
 
-       while (!IsTransmitEmpty()); // bad, this is blocking code
+       //while (!IsTransmitEmpty()); // bad, this is blocking code
 
     }
     exit:
@@ -1481,7 +1546,7 @@ void InitCalibrateSM() {
     calibrateState = calibrate_onthreshold;
 
 #ifdef DEBUG
-//     printf("\nReady for on tape threshold calibration. Trigger front bumper when done.");
+//     //printf("\nReady for on tape threshold calibration. Trigger front bumper when done.");
 #endif
     InitTimer(TIMER_CALIBRATE, CALIBRATE_TIMEOUT);
     CALIBRATE_INDICATOR_TRIS = 0;
@@ -1490,6 +1555,7 @@ void InitCalibrateSM() {
 
 void InitFindTapeSM() {
     findState = find_forward;
+    InitTimer(MASTER_TIMER,MASTER_TIMEOUT);
 }
 
 void InitAvoidObstacleSM() {
@@ -1498,7 +1564,7 @@ void InitAvoidObstacleSM() {
 
 void InitReturnIslandSM() {
     returnState = return_left;
-    InitTimer(TIMER_MOVE, RETURN_LEFT_DELAY);
+    InitTimer(TIMER_RETURN, RETURN_LEFT_DELAY);
 }
 
 void InitTargetSM() {
@@ -1528,6 +1594,14 @@ void wait() {
     unsigned int wait = 0;
     for (wait = 0; wait <= 1000000; wait++)
         asm("nop");
+}
+
+unsigned int DecrementTimer(unsigned int timeMax, unsigned int timeCur) {
+    int time = timeCur - (timeMax >> 2);
+    if (time < 0)
+        return timeMax;
+    else
+        return (unsigned int)time;
 }
 
 // ---------------------- EOF ----------------------

@@ -33,8 +33,8 @@
 #define IR_MAIN AD_PORTW6
 #define IR_ANGLE AD_PORTW7
 
-#define MAIN_HIGH_THRESHOLD 309
-#define MAIN_LOW_THRESHOLD 287
+#define MAIN_HIGH_THRESHOLD 299
+#define MAIN_LOW_THRESHOLD 279
 #define ANGLE_HIGH_THRESHOLD 962
 #define ANGLE_LOW_THRESHOLD 943
 
@@ -62,6 +62,10 @@ void UpdateCounters();
 /*******************************************************************************
  * PRIVATE FUNCTIONS                                                           *
  ******************************************************************************/
+/**
+ * @Function: UpdateCounters
+ * @remark Updates the IR sensor counts by comparing them with hysteretic thresholds.
+ * @date 2012.3.5 12:47 */
 void UpdateCounters() {
     char result = IsMainTriggered();
     irCounter[IR_MAIN_I] += result;
@@ -111,6 +115,11 @@ void UpdateCounters() {
     }
 }
 
+/**
+ * @Function: IsAngleTriggered
+ * @return TRUE or FALSE 
+ * @remark When angled beacon is high.
+ * @date 2012.3.5 12:47 */
 char IsAngleTriggered() {
     unsigned int val = ReadADPin(IR_ANGLE);
     //dbprintf("\nAngle=%d", val);
@@ -128,6 +137,7 @@ char IsAngleTriggered() {
     }
     return OFF;
 }
+
 
 char IsMainTriggered() {
     unsigned int val = ReadADPin(IR_MAIN);
