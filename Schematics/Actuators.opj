@@ -22,5 +22,25 @@
     (Doc
       (Type "COrCapturePMDoc")
       (Frame
-        (Placement "44 2 3 -1 -1 -8 -30 0 200 0 476"))
-      (Tab 0))))
+        (Placement "44 0 1 -1 -1 -8 -30 0 200 0 476"))
+      (Tab 0))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 2 3 -1 -1 -8 -30 75 1758 75 589")
+        (Scroll "-453 0")
+        (Zoom "100")
+        (Occurrence "/"))
+      (Path "C:\USERS\DAGOODMA\DROPBOX\CE118_FINAL\SCHEMATICS\ACTUATORS.DSN")
+      (Schematic "SCHEMATIC1")
+      (Page "servoGate"))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -8 -30 100 1783 100 614")
+        (Scroll "-332 0")
+        (Zoom "100")
+        (Occurrence "/"))
+      (Path "C:\USERS\DAGOODMA\DROPBOX\CE118_FINAL\SCHEMATICS\ACTUATORS.DSN")
+      (Schematic "SCHEMATIC1")
+      (Page "motorWheels"))))

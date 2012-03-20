@@ -52,30 +52,18 @@
     (FileView
       (Path "Design Resources")
       (Path "Design Resources" ".\sensors.dsn")
-      (Path "Design Resources" ".\sensors.dsn" "SCHEMATIC1")
-      (Select "Design Resources" ".\sensors.dsn" "SCHEMATIC1"
-         "collisionSensors"))
+      (Path "Design Resources" ".\sensors.dsn" "SCHEMATIC1"))
     (HierarchyView)
     (Doc
       (Type "COrCapturePMDoc")
       (Frame
-        (Placement "44 0 1 -1 -1 -8 -30 0 200 0 476"))
+        (Placement "44 2 3 -1 -1 -8 -30 0 200 0 476"))
       (Tab 0))
     (Doc
       (Type "COrSchematicDoc")
       (Frame
-        (Placement "44 0 1 -1 -1 -8 -30 50 1696 50 564")
+        (Placement "44 0 1 -1 -1 -8 -30 75 1721 75 589")
         (Scroll "-314 0")
-        (Zoom "100")
-        (Occurrence "/"))
-      (Path "C:\USERS\JURJOHNS\DROPBOX\CE118_FINAL\SCHEMATICS\SENSORS.DSN")
-      (Schematic "SCHEMATIC1")
-      (Page "tapeSensors"))
-    (Doc
-      (Type "COrSchematicDoc")
-      (Frame
-        (Placement "44 2 3 -1 -1 -8 -30 75 1721 75 589")
-        (Scroll "-434 0")
         (Zoom "100")
         (Occurrence "/"))
       (Path "C:\USERS\JURJOHNS\DROPBOX\CE118_FINAL\SCHEMATICS\SENSORS.DSN")
